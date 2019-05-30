@@ -1,5 +1,4 @@
 const path = require("path");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = ({ config }) => {
   const rules = [{
@@ -15,15 +14,7 @@ module.exports = ({ config }) => {
     ]
   }];
   config.module.rules = config.module.rules.concat(rules);
-  config.plugins.push(
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    })
-  );
-  config.resolve.extensions.push(".ts", ".tsx", ".scss");
+  config.resolve.extensions.push(".ts", ".tsx");
 
   return config;
 };

@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import './style';
+import './style.scss';
 interface IProps {
     /**
      * Text for the button
