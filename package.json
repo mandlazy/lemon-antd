@@ -1,5 +1,5 @@
 {
-  "name": "lemon-antd-library",
+  "name": "lemon-antd",
   "version": "0.0.1",
   "main": "build/index.js",
   "types": "build/lib/index.d.ts",
