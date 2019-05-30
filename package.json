@@ -24,7 +24,7 @@
     "copy-woff2-to-lib": "cpx \"./src/**/*.woff2\" ./build/lib",
     "copy-svg-to-lib": "cpx \"./src/**/*.svg\" ./build/lib",
     "copy-png-to-lib": "cpx \"./src/**/*.png\" ./build/lib",
-    "deploy": "npm run build && npm publish",
+    "deploy": "npm run build && npm publish --access public",
     "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'"
   },
   "dependencies": {
