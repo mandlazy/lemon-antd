@@ -34,9 +34,9 @@
     "@storybook/addon-links": "^5.0.11",
     "@storybook/addon-options": "^5.0.11",
     "@storybook/react": "^5.0.11",
+    "@types/react-router-dom": "^4.3.3",
     "antd": "^3.19.1",
-    "react": "^16.8.6",
-    "react-router-dom": "^5.0.0"
+    "react": "^16.8.6"
   },
   "browserslist": [
     ">0.2%",
@@ -51,6 +51,7 @@
     "@types/react-dom": "^16.8.3",
     "@types/react-test-renderer": "^16.8.1",
     "@types/storybook-addon-jsx": "^5.4.3",
+    "@types/storybook-react-router": "^1.0.0",
     "@types/storybook__addon-actions": "^3.4.2",
     "@types/storybook__addon-info": "^4.1.1",
     "@types/storybook__addon-knobs": "^4.0.5",
@@ -67,8 +68,11 @@
     "react-docgen-typescript-loader": "^3.1.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "react-dom": "^16.8.6",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
     "react-test-renderer": "^16.8.6",
     "sass-loader": "^7.1.0",
+    "storybook-react-router": "^1.0.5",
     "tachyons": "^4.10.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.15.0",
@@ -77,6 +81,12 @@
   "description": "Simple to use TypeScript React Component Library with Storybook 5 and test running with Jest.",
   "bugs": {
     "url": "https://github.com/mandlazy/lemon-antd/issues"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    }
   },
   "homepage": "https://github.com/mandlazy/lemon-antd#readme",
   "author": "",

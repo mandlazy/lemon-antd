@@ -10,7 +10,8 @@
             "single"
         ],
         "ordered-imports": false,
-        "trailing-comma": false
+        "trailing-comma": false,
+        "curly": [true, "ignore-same-line"]
     },
     "rulesDirectory": []
 }
