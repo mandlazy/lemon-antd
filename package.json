@@ -16,7 +16,7 @@
     "build-lib-watch": "tsc -w",
     "build-lib": "tsc && npm run copy-css-to-lib && npm run copy-svg-to-lib && npm run copy-png-to-lib && npm run copy-woff2-to-lib",
     "storybook": "start-storybook -p 6006",
-    "test": "jest",
+    "test": "jest --no-cache",
     "test:coverage": "npm test -- --coverage",
     "test:update": "npm test -- --u --coverage",
     "build-storybook": "-c .storybook -o .out",
@@ -45,7 +45,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/jest": "^24.0.11",
+    "@types/jest": "^24.0.13",
     "@types/node": "^11.13.2",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.3",
@@ -59,12 +59,9 @@
     "@types/storybook__react": "^4.0.1",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
-    "babel-plugin-import": "^1.11.2",
     "cpx": "^1.5.0",
-    "jest": "^24.7.1",
-    "mini-css-extract-plugin": "^0.7.0",
+    "jest": "^24.8.0",
     "node-sass": "^4.12.0",
-    "npm": "^6.4.1",
     "react-docgen-typescript-loader": "^3.1.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "react-dom": "^16.8.6",
@@ -73,7 +70,7 @@
     "react-test-renderer": "^16.8.6",
     "sass-loader": "^7.1.0",
     "storybook-react-router": "^1.0.5",
-    "tachyons": "^4.10.0",
+    "tachyons": "^4.11.1",
     "ts-jest": "^24.0.2",
     "tslint": "^5.15.0",
     "typescript": "^3.4.2"
@@ -81,12 +78,6 @@
   "description": "Simple to use TypeScript React Component Library with Storybook 5 and test running with Jest.",
   "bugs": {
     "url": "https://github.com/mandlazy/lemon-antd/issues"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
-      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
-    }
   },
   "homepage": "https://github.com/mandlazy/lemon-antd#readme",
   "author": "",

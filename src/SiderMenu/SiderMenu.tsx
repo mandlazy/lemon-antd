@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { MenuTheme } from 'antd/lib/menu';
-import { Link } from 'react-router-dom';
+import Link from '../Link/Link';
 
 const {  SubMenu, Item } = Menu;
 
@@ -22,6 +22,7 @@ export interface ISiderMenuProps {
   theme?: MenuTheme;
   currentPath?: string;
   defaultSelectKey?: string;
+  renderLink?: FunctionComponent<JSX.Element>;
 }
 
 interface IDefaultKeysArgs {
@@ -30,20 +31,29 @@ interface IDefaultKeysArgs {
   next?: boolean;
 }
 
-const renderMenuItem = ({ name, to, title, icon }: IMenuItem) =>
-  <Item key={ name }>
-    { to ? <Link to={ to }>
-            <span>
-              {icon && <Icon type={ icon } />}
-              <span>{title}</span>
-            </span>
-          </Link> : <span>
-                      {icon && <Icon type={ icon } />}
-                      <span>{ title }</span>
-                    </span>}
-  </Item>;
+const handleLinkComponent = ({ name, to, title, icon }: IMenuItem, wrap?: FunctionComponent<JSX.Element>) => {
+  const defaultComp = ( 
+    <span>
+      {icon && <Icon type={ icon } />}
+      <span>{title}</span>
+    </span> );
+  return wrap ? wrap(defaultComp, to) : defaultComp;
+};
 
-const renderSubMenu = ({ name, title, icon, children }: IMenuItem) =>
+const renderMenuItem = (menuItem: IMenuItem, renderLink?:FunctionComponent<JSX.Element>) => {
+  const { name, to } = menuItem;
+  let wrap;
+  if (to) {
+    wrap = renderLink || ((children: JSX.Element) => (<Link to={to}>{ children }</Link>));
+  } 
+  return (
+    <Item key={ name }>
+      { handleLinkComponent(menuItem, wrap) }
+    </Item>
+  );
+};
+
+const renderSubMenu = ({ name, title, icon, children }: IMenuItem, renderLink?: FunctionComponent<JSX.Element>) =>
   <SubMenu
       key={ name }
       title={
@@ -54,30 +64,31 @@ const renderSubMenu = ({ name, title, icon, children }: IMenuItem) =>
       }>
       {children && children.map(
           (item) => item.children && item.children.length > 0 ?
-              renderSubMenu(item) : renderMenuItem(item)
+              renderSubMenu(item) : renderMenuItem(item, renderLink)
       )}
   </SubMenu>;
 
-const handSubMenuItem= (item:IMenuItem, value:string, selectKey:IDefaultKeysArgs) => {
-  const ret = new RegExp('\\/?' + value).test(item.to);
-  ret && selectKey.selectedKeys.push(item.name);
-  selectKey.next = !ret;
+const handSubMenuItem = (item: IMenuItem, value: string, selectKey: IDefaultKeysArgs) => {
+  const next = new RegExp('\\/?' + value).test(item.to);
+  if (next) selectKey.selectedKeys.push(item.name);
+  selectKey.next = !next;
   return selectKey;
 };
 
-const handMenuItem = (items: IMenuItem[], value: string, selectKey:IDefaultKeysArgs, pItem?:IMenuItem):IDefaultKeysArgs => {
-  pItem && selectKey.openKeys.push(pItem.name);
-  items.every(({ children, ...item }) => {
-    selectKey = children ? handMenuItem(children, value, selectKey, item) : handSubMenuItem(item, value, selectKey);
-    return selectKey.next ? true : false;
-  });
-  return selectKey;
-};
+const handMenuItem =
+  (items: IMenuItem[], value: string, selectKey: IDefaultKeysArgs, pItem?: IMenuItem): IDefaultKeysArgs => {
+    if (pItem) selectKey.openKeys.push(pItem.name);
+    items.every(({ children, ...item }) => {
+      selectKey = children ? handMenuItem(children, value, selectKey, item) : handSubMenuItem(item, value, selectKey);
+      return selectKey.next ? true : false;
+    });
+    return selectKey;
+  };
 
-const handleSelectKey = (items: IMenuItem[], value?: string):IDefaultKeysArgs => {
-  let selectKey:IDefaultKeysArgs = {
-    selectedKeys: [],
-    openKeys: []
+const handleSelectKey = (items: IMenuItem[], value?: string): IDefaultKeysArgs => {
+  let selectKey: IDefaultKeysArgs = {
+    openKeys: [],
+    selectedKeys: []
   };
   if (value) {
     selectKey = handMenuItem(items, value, selectKey);
@@ -85,19 +96,16 @@ const handleSelectKey = (items: IMenuItem[], value?: string):IDefaultKeysArgs =>
   return selectKey;
 };
 
-const sortMenuItems = (items: IMenuItem[], rules: string[]): IMenuItem[] => {
-  return items;
-};
-
-const SiderMenu = (props: ISiderMenuProps) => {
-  const {
+const SiderMenu:React.FunctionComponent<ISiderMenuProps> = ({
     menus,
     width,
     className = '',
     collapsed = false,
     theme = 'dark',
     currentPath,
-    defaultSelectKey } = props;  
+    defaultSelectKey,
+    renderLink
+  }) => {
   const { selectedKeys, openKeys } = handleSelectKey(
     menus,
     defaultSelectKey || currentPath
@@ -116,7 +124,7 @@ const SiderMenu = (props: ISiderMenuProps) => {
         mode='inline'>
         { menus && menus.map(
             (item) => item.children && item.children.length ?
-                renderSubMenu(item) : renderMenuItem(item)
+                renderSubMenu(item, renderLink) : renderMenuItem(item, renderLink)
         )}
       </Menu>
     </Layout.Sider>

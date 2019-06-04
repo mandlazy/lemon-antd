@@ -12,7 +12,8 @@ module.exports = ({ config }) => {
         "css-loader", // 将 CSS 转化成 CommonJS 模块
         "sass-loader" // 将 Sass 编译成 CSS，默认使用 Node Sass
     ]
-  }];
+  } 
+];
   config.module.rules = config.module.rules.concat(rules);
   config.resolve.extensions.push(".ts", ".tsx");
 
