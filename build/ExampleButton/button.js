@@ -10,3 +10,4 @@ var ExampleButton = function (props) {
     return (react_1.default.createElement(antd_1.Button, { className: 'button', type: 'primary' }, props.text));
 };
 exports.default = ExampleButton;
+//# sourceMappingURL=button.js.map

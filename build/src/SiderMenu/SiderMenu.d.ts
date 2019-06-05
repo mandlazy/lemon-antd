@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React, { FunctionComponent } from 'react';
 import { MenuTheme } from 'antd/lib/menu';
 export interface IMenuItem {
     name: string;
@@ -16,78 +16,7 @@ export interface ISiderMenuProps {
     theme?: MenuTheme;
     currentPath?: string;
     defaultSelectKey?: string;
+    renderLink?: FunctionComponent<JSX.Element>;
 }
-declare const SiderMenu: {
-    (props: ISiderMenuProps): JSX.Element;
-    displayName: string;
-    __docgenInfo: {
-        "description": string;
-        "displayName": string;
-        "props": {
-            "menus": {
-                "defaultValue": null;
-                "description": string;
-                "name": string;
-                "required": boolean;
-                "type": {
-                    "name": string;
-                };
-            };
-            "width": {
-                "defaultValue": null;
-                "description": string;
-                "name": string;
-                "required": boolean;
-                "type": {
-                    "name": string;
-                };
-            };
-            "className": {
-                "defaultValue": null;
-                "description": string;
-                "name": string;
-                "required": boolean;
-                "type": {
-                    "name": string;
-                };
-            };
-            "collapsed": {
-                "defaultValue": null;
-                "description": string;
-                "name": string;
-                "required": boolean;
-                "type": {
-                    "name": string;
-                };
-            };
-            "theme": {
-                "defaultValue": null;
-                "description": string;
-                "name": string;
-                "required": boolean;
-                "type": {
-                    "name": string;
-                };
-            };
-            "currentPath": {
-                "defaultValue": null;
-                "description": string;
-                "name": string;
-                "required": boolean;
-                "type": {
-                    "name": string;
-                };
-            };
-            "defaultSelectKey": {
-                "defaultValue": null;
-                "description": string;
-                "name": string;
-                "required": boolean;
-                "type": {
-                    "name": string;
-                };
-            };
-        };
-    };
-};
+declare const SiderMenu: React.FunctionComponent<ISiderMenuProps>;
 export default SiderMenu;

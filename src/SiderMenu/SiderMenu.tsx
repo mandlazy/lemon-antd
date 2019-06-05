@@ -32,20 +32,21 @@ interface IDefaultKeysArgs {
 }
 
 const handleLinkComponent = ({ name, to, title, icon }: IMenuItem, wrap?: FunctionComponent<JSX.Element>) => {
-  const defaultComp = ( 
+  const defaultComp = (
     <span>
       {icon && <Icon type={ icon } />}
       <span>{title}</span>
-    </span> );
-  return wrap ? wrap(defaultComp, to) : defaultComp;
+    </span>
+  );
+  return wrap !== undefined ? wrap(defaultComp, to) : defaultComp;
 };
 
-const renderMenuItem = (menuItem: IMenuItem, renderLink?:FunctionComponent<JSX.Element>) => {
+const renderMenuItem = (menuItem: IMenuItem, renderLink?: FunctionComponent<JSX.Element>) => {
   const { name, to } = menuItem;
   let wrap;
   if (to) {
     wrap = renderLink || ((children: JSX.Element) => (<Link to={to}>{ children }</Link>));
-  } 
+  }
   return (
     <Item key={ name }>
       { handleLinkComponent(menuItem, wrap) }
@@ -96,7 +97,7 @@ const handleSelectKey = (items: IMenuItem[], value?: string): IDefaultKeysArgs =
   return selectKey;
 };
 
-const SiderMenu:React.FunctionComponent<ISiderMenuProps> = ({
+const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
     menus,
     width,
     className = '',

@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React, { FunctionComponent } from 'react';
 import { MenuTheme } from 'antd/lib/menu';
 export interface IMenuItem {
     name: string;
@@ -16,6 +16,7 @@ export interface ISiderMenuProps {
     theme?: MenuTheme;
     currentPath?: string;
     defaultSelectKey?: string;
+    renderLink?: FunctionComponent<JSX.Element>;
 }
-declare const SiderMenu: (props: ISiderMenuProps) => JSX.Element;
+declare const SiderMenu: React.FunctionComponent<ISiderMenuProps>;
 export default SiderMenu;
