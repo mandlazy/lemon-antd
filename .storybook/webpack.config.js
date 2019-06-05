@@ -1,10 +1,24 @@
 const path = require("path");
 
 module.exports = ({ config }) => {
-  const rules = [{
+  const rules = [
+    {//ES6、JSX处理
+        test: /\.(ts|tsx)$/,
+        loader:'babel-loader',
+        exclude: /node_modules/,
+        options: {
+          plugins: [
+            [
+              "import",
+              {libraryName: "antd", style: 'css'}
+            ] //antd按需加载
+          ]
+        }
+  }, {
     test: /\.(ts|tsx)$/,
     loaders: ['awesome-typescript-loader', 'react-docgen-typescript-loader'],
     include: path.resolve(__dirname, '../'),
+    exclude: /node_modules/,
   }, {
     test: /\.scss$/,
     use: [
