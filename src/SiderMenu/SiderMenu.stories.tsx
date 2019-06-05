@@ -2,7 +2,7 @@ import React, { Children } from 'react';
 import { storiesOf } from '@storybook/react';
 import SiderMenu, { IMenuItem } from './index';
 import StoryRouter from 'storybook-react-router';
-import { Link } from 'react-router-dom';
+import { Link, MemoryRouter } from 'react-router-dom';
 
 const stories = storiesOf('SiderMenu', module);
 const accountChildren: IMenuItem[] = [
@@ -18,10 +18,12 @@ export const menus: IMenuItem[] = [
 stories.addDecorator(StoryRouter()).add(
   'Common',
   () => (
-    <SiderMenu
-      renderLink={(children, to) => (<Link to={to}>{children}</Link>)}
-      currentPath={'/account/list'}
-      menus={menus}
-    />
+    <MemoryRouter>
+      <SiderMenu
+        renderLink={(children, to) => (<Link to={to}>{children}</Link>)}
+        currentPath={'/account/list'}
+        menus={menus}
+      />
+    </MemoryRouter>
   ),
 );
