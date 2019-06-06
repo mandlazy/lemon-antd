@@ -1,0 +1,16 @@
+sudo: false
+language: node_js
+node_js:
+  - '10'
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.16.0
+  - export PATH=$HOME/.yarn/bin:$PATH
+cache:
+  yarn: true
+install:
+  - yarn
+script:
+  - yarn lint
+  - yarn test:update
+  - yarn build-lib
+  
