@@ -1,6 +1,8 @@
 
 # React Component Library Base on antd
 
+[![Build Status](https://travis-ci.com/mandlazy/lemon-antd.svg?branch=master)](https://travis-ci.com/mandlazy/lemon-antd)
+
 Simple to use TypeScript React Component Library with Storybook 5 and test running with Jest.
 
 Compiles all code to a build folder for exporting. Creates a static version of Storybook site for hosting. Makes assumptions on TypeScript, TSLint, Webpack, and storybook Addon configurations.
