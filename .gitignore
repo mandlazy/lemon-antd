@@ -13,7 +13,6 @@
 /src/**/__snapshots__
 
 # production
-/build
 /storybook-static
 
 # misc
