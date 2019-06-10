@@ -98,7 +98,7 @@ const handleSelectKey = (items: IMenuItem[], value?: string): IDefaultKeysArgs =
 };
 
 const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
-    menus,
+    menus = [],
     width,
     className = '',
     collapsed = false,
