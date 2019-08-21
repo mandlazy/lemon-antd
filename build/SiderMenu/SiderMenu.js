@@ -39,7 +39,7 @@ const selectOpsWithUseDefault = (useDefault, selectKeys = [], openKeys = []) => 
     }
     return selectOps;
 };
-const selectKeysTemp = {
+let selectKeysTemp = {
     openKeys: [],
     selectedKeys: []
 };
@@ -61,6 +61,10 @@ const handMenuItem = (items, value, useDefault, pItem) => {
 };
 const handleSelectKey = (useDefault, items, value) => {
     let selectOps = selectOpsWithUseDefault(useDefault);
+    selectKeysTemp = {
+        openKeys: [],
+        selectedKeys: []
+    };
     if (value) {
         selectOps = handMenuItem(items, value, useDefault);
     }

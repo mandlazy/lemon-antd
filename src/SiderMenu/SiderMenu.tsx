@@ -102,7 +102,7 @@ const selectOpsWithUseDefault = (
   return selectOps;
 };
 
-const selectKeysTemp: ISelectKeyArg = {
+let selectKeysTemp: ISelectKeyArg = {
   openKeys: [],
   selectedKeys: []
 };
@@ -124,6 +124,10 @@ const handMenuItem =
 
 const handleSelectKey = (useDefault: boolean, items: IMenuItem[], value?: string): IDefaultKeysOps => {
   let selectOps: IDefaultKeysOps = selectOpsWithUseDefault(useDefault);
+  selectKeysTemp = {
+    openKeys: [],
+    selectedKeys: []
+  };
   if (value) {
     selectOps = handMenuItem(items, value, useDefault);
   }
