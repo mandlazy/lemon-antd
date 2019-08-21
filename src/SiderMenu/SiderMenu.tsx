@@ -22,14 +22,24 @@ export interface ISiderMenuProps {
   theme?: MenuTheme;
   currentPath?: string;
   defaultSelectKey?: string;
+  useDefaultSelectKey?: boolean;
   renderLink?: FunctionComponent<JSX.Element>;
+  [propName: string]: any;
 }
 
-interface IDefaultKeysArgs {
-  selectedKeys: string[];
-  openKeys: string[];
-  next?: boolean;
+interface IDefaultKeysOps {
+  selectedKeys?: string[];
+  openKeys?: string[];
+  defaultSelectedKeys?: string[];
+  defaultOpenKeys?: string[];
 }
+
+interface ISelectKeyArg {
+  selectedKeys: string[];
+  openKeys: string[],
+  next?: boolean
+}
+
 
 const handleLinkComponent = ({ name, to, title, icon }: IMenuItem, wrap?: FunctionComponent<JSX.Element>) => {
   const defaultComp = (
@@ -68,33 +78,45 @@ const renderSubMenu = ({ name, title, icon, children }: IMenuItem, renderLink?: 
               renderSubMenu(item) : renderMenuItem(item, renderLink)
       )}
   </SubMenu>;
-
-const handSubMenuItem = (item: IMenuItem, value: string, selectKey: IDefaultKeysArgs) => {
-  const next = new RegExp('\\/?' + value).test(item.to);
-  if (next) selectKey.selectedKeys.push(item.name);
-  selectKey.next = !next;
-  return selectKey;
-};
-
-const handMenuItem =
-  (items: IMenuItem[], value: string, selectKey: IDefaultKeysArgs, pItem?: IMenuItem): IDefaultKeysArgs => {
-    if (pItem) selectKey.openKeys.push(pItem.name);
-    items.every(({ children, ...item }) => {
-      selectKey = children ? handMenuItem(children, value, selectKey, item) : handSubMenuItem(item, value, selectKey);
-      return selectKey.next ? true : false;
-    });
-    return selectKey;
-  };
-
-const handleSelectKey = (items: IMenuItem[], value?: string): IDefaultKeysArgs => {
-  let selectKey: IDefaultKeysArgs = {
-    openKeys: [],
-    selectedKeys: []
-  };
-  if (value) {
-    selectKey = handMenuItem(items, value, selectKey);
+  
+const selectOpsWithUseDefault = (useDefault: boolean, selectKeys: string[] = [], openKeys: string[] = []):IDefaultKeysOps => {
+  let selectOps: IDefaultKeysOps = {};
+  if (useDefault) {
+    selectOps.defaultOpenKeys = openKeys;
+    selectOps.defaultSelectedKeys = selectKeys;
+  } else {
+    selectOps.openKeys = openKeys;
+    selectOps.selectedKeys = selectKeys;
   }
-  return selectKey;
+  return selectOps;
+}
+let selectKeysTemp: ISelectKeyArg = {
+  openKeys: [],
+  selectedKeys: []
+};
+const handSubMenuItem = (item: IMenuItem, value: string) => {
+  const next = new RegExp('\\/?' + value).test(item.to);
+  if (next) selectKeysTemp.selectedKeys.push(item.name);
+  selectKeysTemp.next = !next;
+};
+const handMenuItem =
+  (items: IMenuItem[], value: string, useDefault: boolean, pItem?: IMenuItem): IDefaultKeysOps => {
+    if (pItem) 
+      selectKeysTemp.openKeys.push(pItem.name);
+    items.every(({ children, ...item }) => {
+      children ? handMenuItem(children, value, useDefault, item) : handSubMenuItem(item, value);
+      return selectKeysTemp.next ? true : false;
+    });
+    const { selectedKeys, openKeys } = selectKeysTemp;
+    return selectOpsWithUseDefault(useDefault, selectedKeys, openKeys);
+  };
+
+const handleSelectKey = (useDefault: boolean, items: IMenuItem[], value?: string): IDefaultKeysOps => {
+  let selectOps: IDefaultKeysOps = selectOpsWithUseDefault(useDefault);
+  if (value) {
+    selectOps = handMenuItem(items, value, useDefault);
+  }
+  return selectOps;
 };
 
 const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
@@ -105,9 +127,12 @@ const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
     theme = 'dark',
     currentPath,
     defaultSelectKey,
-    renderLink
+    renderLink,
+    useDefaultSelectKey = true,
+    ...otherProps
   }) => {
-  const { selectedKeys, openKeys } = handleSelectKey(
+  const selectedOps = handleSelectKey(
+    useDefaultSelectKey,
     menus,
     defaultSelectKey || currentPath
   );
@@ -120,12 +145,12 @@ const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
       collapsed={collapsed}>
       <Menu
         theme={theme}
-        defaultSelectedKeys={selectedKeys}
-        defaultOpenKeys={openKeys}
-        mode='inline'>
+        mode='inline'
+        { ...selectedOps }
+        { ...otherProps }>
         { menus && menus.map(
             (item) => item.children && item.children.length ?
-                renderSubMenu(item, renderLink) : renderMenuItem(item, renderLink)
+              renderSubMenu(item, renderLink) : renderMenuItem(item, renderLink)
         )}
       </Menu>
     </Layout.Sider>

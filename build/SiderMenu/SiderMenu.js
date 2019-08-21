@@ -46,7 +46,7 @@ const handleSelectKey = (items, value) => {
     }
     return selectKey;
 };
-const SiderMenu = ({ menus, width, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink }) => {
+const SiderMenu = ({ menus = [], width, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink }) => {
     const { selectedKeys, openKeys } = handleSelectKey(menus, defaultSelectKey || currentPath);
     return (React.createElement(Layout.Sider, { width: width, trigger: null, collapsible: true, className: 'sider ' + className, collapsed: collapsed },
         React.createElement(Menu, { theme: theme, defaultSelectedKeys: selectedKeys, defaultOpenKeys: openKeys, mode: 'inline' }, menus && menus.map((item) => item.children && item.children.length ?
