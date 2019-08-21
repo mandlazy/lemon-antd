@@ -16,40 +16,60 @@ const renderMenuItem = (menuItem, renderLink) => {
     }
     return (React.createElement(Item, { key: name }, handleLinkComponent(menuItem, wrap)));
 };
-const renderSubMenu = ({ name, title, icon, children }, renderLink) => React.createElement(SubMenu, { key: name, title: React.createElement("span", null,
+const sortItem = (menus, sort = []) => {
+    const findIndex = (name) => sort.findIndex((item) => item === name);
+    return sort ? menus.sort((pre, cur) => {
+        return findIndex(pre.name) - findIndex(cur.name);
+    })
+        : menus;
+};
+const renderSubMenu = ({ name, title, icon, children, sort }, renderLink) => React.createElement(SubMenu, { key: name, title: React.createElement("span", null,
         icon && React.createElement(Icon, { type: icon }),
-        React.createElement("span", null, title)) }, children && children.map((item) => item.children && item.children.length > 0 ?
+        React.createElement("span", null, title)) }, children && sortItem(children, sort).map((item) => item.children && item.children.length > 0 ?
     renderSubMenu(item) : renderMenuItem(item, renderLink)));
-const handSubMenuItem = (item, value, selectKey) => {
+const selectOpsWithUseDefault = (useDefault, selectKeys = [], openKeys = []) => {
+    const selectOps = {};
+    if (useDefault) {
+        selectOps.defaultOpenKeys = openKeys;
+        selectOps.defaultSelectedKeys = selectKeys;
+    }
+    else {
+        selectOps.openKeys = openKeys;
+        selectOps.selectedKeys = selectKeys;
+    }
+    return selectOps;
+};
+const selectKeysTemp = {
+    openKeys: [],
+    selectedKeys: []
+};
+const handSubMenuItem = (item, value) => {
     const next = new RegExp('\\/?' + value).test(item.to);
     if (next)
-        selectKey.selectedKeys.push(item.name);
-    selectKey.next = !next;
-    return selectKey;
+        selectKeysTemp.selectedKeys.push(item.name);
+    selectKeysTemp.next = !next;
 };
-const handMenuItem = (items, value, selectKey, pItem) => {
+const handMenuItem = (items, value, useDefault, pItem) => {
     if (pItem)
-        selectKey.openKeys.push(pItem.name);
+        selectKeysTemp.openKeys.push(pItem.name);
     items.every(({ children, ...item }) => {
-        selectKey = children ? handMenuItem(children, value, selectKey, item) : handSubMenuItem(item, value, selectKey);
-        return selectKey.next ? true : false;
+        children ? handMenuItem(children, value, useDefault, item) : handSubMenuItem(item, value);
+        return selectKeysTemp.next ? true : false;
     });
-    return selectKey;
+    const { selectedKeys, openKeys } = selectKeysTemp;
+    return selectOpsWithUseDefault(useDefault, selectedKeys, openKeys);
 };
-const handleSelectKey = (items, value) => {
-    let selectKey = {
-        openKeys: [],
-        selectedKeys: []
-    };
+const handleSelectKey = (useDefault, items, value) => {
+    let selectOps = selectOpsWithUseDefault(useDefault);
     if (value) {
-        selectKey = handMenuItem(items, value, selectKey);
+        selectOps = handMenuItem(items, value, useDefault);
     }
-    return selectKey;
+    return selectOps;
 };
-const SiderMenu = ({ menus = [], width, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink }) => {
-    const { selectedKeys, openKeys } = handleSelectKey(menus, defaultSelectKey || currentPath);
+const SiderMenu = ({ menus = [], width, sort, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink, useDefaultSelectKey = true, ...otherProps }) => {
+    const selectedOps = handleSelectKey(useDefaultSelectKey, menus, defaultSelectKey || currentPath);
     return (React.createElement(Layout.Sider, { width: width, trigger: null, collapsible: true, className: 'sider ' + className, collapsed: collapsed },
-        React.createElement(Menu, { theme: theme, defaultSelectedKeys: selectedKeys, defaultOpenKeys: openKeys, mode: 'inline' }, menus && menus.map((item) => item.children && item.children.length ?
+        React.createElement(Menu, Object.assign({ theme: theme, mode: 'inline' }, selectedOps, otherProps), menus && sortItem(menus, sort).map((item) => item.children && item.children.length ?
             renderSubMenu(item, renderLink) : renderMenuItem(item, renderLink)))));
 };
 export default SiderMenu;

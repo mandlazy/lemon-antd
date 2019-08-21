@@ -16,7 +16,9 @@ export interface ISiderMenuProps {
     theme?: MenuTheme;
     currentPath?: string;
     defaultSelectKey?: string;
+    useDefaultSelectKey?: boolean;
     renderLink?: FunctionComponent<JSX.Element>;
+    [propName: string]: any;
 }
 declare const SiderMenu: React.FunctionComponent<ISiderMenuProps>;
 export default SiderMenu;

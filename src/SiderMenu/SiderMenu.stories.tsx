@@ -11,7 +11,14 @@ const accountChildren: IMenuItem[] = [
 ];
 export const menus: IMenuItem[] = [
   { name: 'home', to: '/home', icon: 'home', title: 'Home' },
-  { name: 'account', to: '/account', icon: 'user', title: 'Account', children: accountChildren, sort: ['accountDetail', 'accountList']  },
+  {
+    name: 'account',
+    icon: 'user',
+    to: '/account',
+    title: 'Account',
+    children: accountChildren,
+    sort: ['accountDetail', 'accountList']
+  },
   { name: 'order', to: '/order', icon: 'snippets', title: 'Order' },
 ];
 

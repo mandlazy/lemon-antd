@@ -36,10 +36,9 @@ interface IDefaultKeysOps {
 
 interface ISelectKeyArg {
   selectedKeys: string[];
-  openKeys: string[],
-  next?: boolean
+  openKeys: string[];
+  next?: boolean;
 }
-
 
 const handleLinkComponent = ({ name, to, title, icon }: IMenuItem, wrap?: FunctionComponent<JSX.Element>) => {
   const defaultComp = (
@@ -64,10 +63,9 @@ const renderMenuItem = (menuItem: IMenuItem, renderLink?: FunctionComponent<JSX.
   );
 };
 
-const sortItem = (menus:IMenuItem[],  sort:string[] = []) => {
-  const findIndex = (name:string) => sort.findIndex(item => item === name);
-  return sort
-    ? menus.sort((pre, cur) => {
+const sortItem = (menus: IMenuItem[],  sort: string[] = []) => {
+  const findIndex = (name: string) => sort.findIndex((item) => item === name);
+  return sort ? menus.sort((pre, cur) => {
         return findIndex(pre.name) - findIndex(cur.name);
       })
     : menus;
@@ -87,9 +85,13 @@ const renderSubMenu = ({ name, title, icon, children, sort }: IMenuItem, renderL
               renderSubMenu(item) : renderMenuItem(item, renderLink)
       )}
   </SubMenu>;
-  
-const selectOpsWithUseDefault = (useDefault: boolean, selectKeys: string[] = [], openKeys: string[] = []):IDefaultKeysOps => {
-  let selectOps: IDefaultKeysOps = {};
+
+const selectOpsWithUseDefault = (
+  useDefault: boolean,
+  selectKeys: string[] = [],
+  openKeys: string[] = []
+): IDefaultKeysOps => {
+  const selectOps: IDefaultKeysOps = {};
   if (useDefault) {
     selectOps.defaultOpenKeys = openKeys;
     selectOps.defaultSelectedKeys = selectKeys;
@@ -98,8 +100,9 @@ const selectOpsWithUseDefault = (useDefault: boolean, selectKeys: string[] = [],
     selectOps.selectedKeys = selectKeys;
   }
   return selectOps;
-}
-let selectKeysTemp: ISelectKeyArg = {
+};
+
+const selectKeysTemp: ISelectKeyArg = {
   openKeys: [],
   selectedKeys: []
 };
@@ -110,8 +113,7 @@ const handSubMenuItem = (item: IMenuItem, value: string) => {
 };
 const handMenuItem =
   (items: IMenuItem[], value: string, useDefault: boolean, pItem?: IMenuItem): IDefaultKeysOps => {
-    if (pItem) 
-      selectKeysTemp.openKeys.push(pItem.name);
+    if (pItem) selectKeysTemp.openKeys.push(pItem.name);
     items.every(({ children, ...item }) => {
       children ? handMenuItem(children, value, useDefault, item) : handSubMenuItem(item, value);
       return selectKeysTemp.next ? true : false;
