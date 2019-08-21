@@ -64,7 +64,16 @@ const renderMenuItem = (menuItem: IMenuItem, renderLink?: FunctionComponent<JSX.
   );
 };
 
-const renderSubMenu = ({ name, title, icon, children }: IMenuItem, renderLink?: FunctionComponent<JSX.Element>) =>
+const sortItem = (menus:IMenuItem[],  sort:string[] = []) => {
+  const findIndex = (name:string) => sort.findIndex(item => item === name);
+  return sort
+    ? menus.sort((pre, cur) => {
+        return findIndex(pre.name) - findIndex(cur.name);
+      })
+    : menus;
+};
+
+const renderSubMenu = ({ name, title, icon, children, sort }: IMenuItem, renderLink?: FunctionComponent<JSX.Element>) =>
   <SubMenu
       key={ name }
       title={
@@ -73,7 +82,7 @@ const renderSubMenu = ({ name, title, icon, children }: IMenuItem, renderLink?: 
               <span>{ title }</span>
           </span>
       }>
-      {children && children.map(
+      {children && sortItem(children, sort).map(
           (item) => item.children && item.children.length > 0 ?
               renderSubMenu(item) : renderMenuItem(item, renderLink)
       )}
@@ -122,6 +131,7 @@ const handleSelectKey = (useDefault: boolean, items: IMenuItem[], value?: string
 const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
     menus = [],
     width,
+    sort,
     className = '',
     collapsed = false,
     theme = 'dark',
@@ -148,7 +158,7 @@ const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
         mode='inline'
         { ...selectedOps }
         { ...otherProps }>
-        { menus && menus.map(
+        { menus && sortItem(menus, sort).map(
             (item) => item.children && item.children.length ?
               renderSubMenu(item, renderLink) : renderMenuItem(item, renderLink)
         )}
