@@ -1,0 +1,21 @@
+.form {
+  padding: 20px;
+  &-cancel-btn {
+    margin-left: 50px;
+  }
+  &-horizontal{
+    &-fields-wrapper {
+      &::after{
+        content:".";
+        display:block;
+        height:0;
+        clear:both;
+        visibility:hidden;
+      }
+    }
+    &-field{
+      float: left;
+      box-sizing: border-box;
+    }
+  }
+}

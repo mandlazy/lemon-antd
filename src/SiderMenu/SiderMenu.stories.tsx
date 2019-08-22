@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import SiderMenu, { IMenuItem } from './index';
 import StoryRouter from 'storybook-react-router';
@@ -23,7 +23,7 @@ export const menus: IMenuItem[] = [
 ];
 
 stories.addDecorator(StoryRouter()).add(
-  'Common',
+  'With sort sider',
   () => (
     <SiderMenu
       sort={['account', 'home', 'order']}

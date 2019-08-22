@@ -1,0 +1,14 @@
+.date-range{
+  &-label{
+    display: inline-block;
+  }
+  .ant-calendar-picker{
+    min-width: 0!important;
+    width: 100%;
+  }
+  &-span{
+    text-align: center;
+    position: relative;
+    top: 40px;
+  }
+}

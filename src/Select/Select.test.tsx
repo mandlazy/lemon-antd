@@ -1,10 +1,11 @@
 import React from 'react';
-import ExampleButton from './button';
+import Select from './index';
 import renderer from 'react-test-renderer';
+import { options } from './Select.stories';
 
-test('Link changes the class when hovered', () => {
+test('select init', () => {
   const component = renderer.create(
-    <ExampleButton text='Cute button!' />,
+    <Select options={options} />,
   );
   const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
