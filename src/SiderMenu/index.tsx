@@ -24,6 +24,7 @@ export interface ISiderMenuProps {
   defaultSelectKey?: string;
   useDefaultSelectKey?: boolean;
   iconComponent?: ComponentType;
+  iconOps?: any;
   renderLink?: FunctionComponent<JSX.Element>;
   [propName: string]: any;
 }
@@ -44,12 +45,13 @@ interface ISelectKeyArg {
 const handleLinkComponent = (
   { name, to, title, icon }: IMenuItem,
   wrap?: FunctionComponent<JSX.Element>,
-  iconComponent?: ComponentType
+  iconComponent?: ComponentType,
+  iconOps?: any,
   ) => {
   const IconComp = iconComponent || Icon;
   const defaultComp = (
     <span>
-      {icon && <IconComp type={ icon } />}
+      {icon && <IconComp {...iconOps} type={ icon } />}
       <span>{title}</span>
     </span>
   );
@@ -59,7 +61,8 @@ const handleLinkComponent = (
 const renderMenuItem = (
   menuItem: IMenuItem,
   renderLink?: FunctionComponent<JSX.Element>,
-  iconComponent?: ComponentType) => {
+  iconComponent?: ComponentType,
+  iconOps?: any) => {
   const { name, to } = menuItem;
   let wrap;
   if (to) {
@@ -67,7 +70,7 @@ const renderMenuItem = (
   }
   return (
     <Item key={ name }>
-      { handleLinkComponent(menuItem, wrap, iconComponent ) }
+      { handleLinkComponent(menuItem, wrap, iconComponent, iconOps ) }
     </Item>
   );
 };
@@ -83,7 +86,8 @@ const sortItem = (menus: IMenuItem[],  sort: string[] = []) => {
 const renderSubMenu = (
   { name, title, icon, children, sort }: IMenuItem,
   renderLink?: FunctionComponent<JSX.Element>,
-  iconComponent?: ComponentType
+  iconComponent?: ComponentType,
+  iconOps?: any
   ) =>
   <SubMenu
       key={ name }
@@ -95,8 +99,8 @@ const renderSubMenu = (
       }>
       {children && sortItem(children, sort).map(
           (item) => item.children && item.children.length > 0 ?
-              renderSubMenu(item, renderLink, iconComponent) :
-              renderMenuItem(item, renderLink, iconComponent)
+              renderSubMenu(item, renderLink, iconComponent, iconOps) :
+              renderMenuItem(item, renderLink, iconComponent, iconOps)
       )}
   </SubMenu>;
 
@@ -159,6 +163,7 @@ const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
     defaultSelectKey,
     renderLink,
     iconComponent,
+    iconOps,
     useDefaultSelectKey = true,
     ...otherProps
   }) => {
@@ -181,8 +186,8 @@ const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
         { ...otherProps }>
         { menus && sortItem(menus, sort).map(
             (item) => item.children && item.children.length ?
-              renderSubMenu(item, renderLink, iconComponent) :
-              renderMenuItem(item, renderLink, iconComponent)
+              renderSubMenu(item, renderLink, iconComponent, iconOps) :
+              renderMenuItem(item, renderLink, iconComponent, iconOps)
         )}
       </Menu>
     </Layout.Sider>

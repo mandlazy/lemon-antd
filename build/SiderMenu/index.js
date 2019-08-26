@@ -2,20 +2,20 @@ import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import Link from '../Link';
 const { SubMenu, Item } = Menu;
-const handleLinkComponent = ({ name, to, title, icon }, wrap, iconComponent) => {
+const handleLinkComponent = ({ name, to, title, icon }, wrap, iconComponent, iconOps) => {
     const IconComp = iconComponent || Icon;
     const defaultComp = (React.createElement("span", null,
-        icon && React.createElement(IconComp, { type: icon }),
+        icon && React.createElement(IconComp, Object.assign({}, iconOps, { type: icon })),
         React.createElement("span", null, title)));
     return wrap !== undefined ? wrap(defaultComp, to) : defaultComp;
 };
-const renderMenuItem = (menuItem, renderLink, iconComponent) => {
+const renderMenuItem = (menuItem, renderLink, iconComponent, iconOps) => {
     const { name, to } = menuItem;
     let wrap;
     if (to) {
         wrap = renderLink || ((children) => (React.createElement(Link, { to: to }, children)));
     }
-    return (React.createElement(Item, { key: name }, handleLinkComponent(menuItem, wrap, iconComponent)));
+    return (React.createElement(Item, { key: name }, handleLinkComponent(menuItem, wrap, iconComponent, iconOps)));
 };
 const sortItem = (menus, sort = []) => {
     const findIndex = (name) => sort.findIndex((item) => item === name);
@@ -24,11 +24,11 @@ const sortItem = (menus, sort = []) => {
     })
         : menus;
 };
-const renderSubMenu = ({ name, title, icon, children, sort }, renderLink, iconComponent) => React.createElement(SubMenu, { key: name, title: React.createElement("span", null,
+const renderSubMenu = ({ name, title, icon, children, sort }, renderLink, iconComponent, iconOps) => React.createElement(SubMenu, { key: name, title: React.createElement("span", null,
         icon && React.createElement(Icon, { type: icon }),
         React.createElement("span", null, title)) }, children && sortItem(children, sort).map((item) => item.children && item.children.length > 0 ?
-    renderSubMenu(item, renderLink, iconComponent) :
-    renderMenuItem(item, renderLink, iconComponent)));
+    renderSubMenu(item, renderLink, iconComponent, iconOps) :
+    renderMenuItem(item, renderLink, iconComponent, iconOps)));
 const selectOpsWithUseDefault = (useDefault, selectKeys = [], openKeys = []) => {
     const selectOps = {};
     if (useDefault) {
@@ -72,12 +72,12 @@ const handleSelectKey = (useDefault, items, value) => {
     }
     return selectOps;
 };
-const SiderMenu = ({ menus = [], width, sort, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink, iconComponent, useDefaultSelectKey = true, ...otherProps }) => {
+const SiderMenu = ({ menus = [], width, sort, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink, iconComponent, iconOps, useDefaultSelectKey = true, ...otherProps }) => {
     const selectedOps = handleSelectKey(useDefaultSelectKey, menus, defaultSelectKey || currentPath);
     return (React.createElement(Layout.Sider, { width: width, trigger: null, collapsible: true, className: 'sider ' + className, collapsed: collapsed },
         React.createElement(Menu, Object.assign({ theme: theme, mode: 'inline' }, selectedOps, otherProps), menus && sortItem(menus, sort).map((item) => item.children && item.children.length ?
-            renderSubMenu(item, renderLink, iconComponent) :
-            renderMenuItem(item, renderLink, iconComponent)))));
+            renderSubMenu(item, renderLink, iconComponent, iconOps) :
+            renderMenuItem(item, renderLink, iconComponent, iconOps)))));
 };
 export default SiderMenu;
 //# sourceMappingURL=index.js.map
