@@ -1,19 +1,8 @@
 import './style.scss';
 import React, { Component } from 'react';
-import { Form, Input, Button, Divider } from 'antd';
-import Select from '../Select';
-import RadioGroup from '../RadioGroup';
-import CheckboxGroup from '../CheckboxGroup';
-import DateRangePicker from '../DateRangePicker';
-const { TextArea } = Input;
-const FILELDS = {
-    select: (props) => React.createElement(Select, Object.assign({ options: [] }, props)),
-    input: (props) => React.createElement(Input, Object.assign({}, props)),
-    radios: (props) => React.createElement(RadioGroup, Object.assign({ options: [] }, props)),
-    checkboxs: (props) => React.createElement(CheckboxGroup, Object.assign({ options: [] }, props)),
-    textarea: (props) => React.createElement(TextArea, Object.assign({}, props)),
-    dateRange: (props) => React.createElement(DateRangePicker, Object.assign({}, props)),
-};
+import { Form, Button, Divider } from 'antd';
+import { COMMON_FILELDS } from '../data/fields';
+const FILELDS = COMMON_FILELDS;
 const renderField = (ops) => {
     const { type = 'input', ...props } = ops;
     const resType = type;
@@ -49,12 +38,12 @@ class DForm extends Component {
                 }
             });
         };
-        this.renderField = ({ label, rules = [], name, initialValue, fieldType = 'string', ...ops }) => {
+        this.renderField = ({ label, rules = [], name, initialValue, className, fieldType = 'string', ...ops }) => {
             if (fieldType === 'string') {
                 rules.unshift(trimRule);
             }
             const { initialValues = {}, form } = this.props;
-            return (React.createElement(Form.Item, { label: label, key: name }, form.getFieldDecorator(name, {
+            return (React.createElement(Form.Item, { label: label, key: name, className: className }, form.getFieldDecorator(name, {
                 initialValue: initialValues[name] || initialValue,
                 rules: [...rules]
             })(renderField(ops))));
@@ -68,15 +57,22 @@ class DForm extends Component {
                 return (React.createElement("div", { className: 'form-horizontal-fields-wrapper' }, fields.map(({ colWidth, ...field }, index) => (React.createElement("div", { style: { padding: `0 ${rowGutter}px`, width: colWidth ? `${colWidth}px` : 'fit-content' }, className: 'form-horizontal-field', key: index }, this.renderField(field))))));
             }
         };
+        this.renderForm = (fields, title) => {
+            const { titleDividerLine = false, footerDividerLine = false, } = this.props;
+            return (React.createElement("div", { className: 'form-wrapper' },
+                title && React.createElement("h3", { className: 'form-title' }, title),
+                titleDividerLine && React.createElement(Divider, { className: 'form-divier' }),
+                React.createElement("div", { className: 'form-fields-wrapper' }, this.renderFields(fields)),
+                footerDividerLine && React.createElement(Divider, null)));
+        };
         Object.assign(FILELDS, props.components);
     }
     render() {
-        const { submitButtonText, cabcelButtonText, fields, dividerLine = false, title } = this.props;
+        const { submitButtonText, cabcelButtonText, fields = [], forms = [], title } = this.props;
         return (React.createElement(Form, { className: 'form', onSubmit: this.handleSubmit },
-            title && React.createElement("h3", null, title),
-            dividerLine && React.createElement(Divider, { className: 'form-divier' }),
-            React.createElement("div", { className: 'form-fields-wrapper' }, this.renderFields(fields)),
-            dividerLine && React.createElement(Divider, null),
+            forms && forms.length ?
+                forms.map((form) => this.renderForm(form.fields, form.title)) :
+                this.renderForm(fields, title),
             React.createElement("div", { className: 'form-btn-wrapper' },
                 React.createElement(Button, { className: 'form-submit-btn', type: 'primary', htmlType: 'submit' }, submitButtonText || '提交'),
                 React.createElement(Button, { className: 'form-cancel-btn', onClick: this.handleCancel }, cabcelButtonText || '取消'))));

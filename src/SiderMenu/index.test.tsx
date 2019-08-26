@@ -1,11 +1,11 @@
 import React from 'react';
-import Select from './index';
+import SiderMenu from './index';
 import renderer from 'react-test-renderer';
-import { options } from './Select.stories';
+import { menus } from './index.stories';
 
-test('select init', () => {
+test('Link changes the class when hovered', () => {
   const component = renderer.create(
-    <Select options={options} />,
+    <SiderMenu menus={menus} />,
   );
   const tree = component.toJSON();
   expect(tree).toMatchSnapshot();

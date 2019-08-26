@@ -10,7 +10,7 @@ export interface IFieldItem {
     [propName: string]: any;
 }
 export interface IFormProps {
-    fields: IFieldItem[];
+    fields: Array<IFormProps | IFieldItem>;
     form: WrappedFormUtils;
     type?: 'horizontal' | 'vertical';
     components?: JSX.Element[];
@@ -18,7 +18,8 @@ export interface IFormProps {
     onSubmit?: (t: object) => {};
     initialValues?: any;
     title?: string;
-    dividerLine?: boolean;
+    titleDividerLine?: boolean;
+    footerDividerLine?: boolean;
     btns?: JSX.Element[];
     submitButtonText?: string;
     cabcelButtonText?: string;
@@ -30,8 +31,9 @@ declare class DForm extends Component<IFormProps & {
     constructor(props: IFormProps);
     handleCancel: () => void;
     handleSubmit: (e: React.FormEvent<Element>) => void;
-    renderField: ({ label, rules, name, initialValue, fieldType, ...ops }: IFieldItem) => JSX.Element;
+    renderField: ({ label, rules, name, initialValue, className, fieldType, ...ops }: IFieldItem) => JSX.Element;
     renderFields: (fields: any[]) => JSX.Element | JSX.Element[];
+    renderForm: (fields: any[], title?: string | undefined) => JSX.Element;
     render(): JSX.Element;
 }
 declare const _default: import("antd/lib/form/interface").ConnectedComponentClass<typeof DForm, Pick<IFormProps, string | number>>;

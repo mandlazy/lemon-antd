@@ -9,11 +9,20 @@
             true,
             "single"
         ],
+        "variable-name": [
+          true,
+          "ban-keywords",
+          "check-format",
+          "allow-pascal-case",
+          "allow-leading-underscore",
+          "allow-trailing-underscore"
+        ],
         "ordered-imports": false,
         "trailing-comma": false,
         "curly": [true, "ignore-same-line"],
         "object-literal-sort-keys": false,
-        "member-access": false
+        "member-access": false,
+        "no-unused-expression": [true, "allow-fast-null-checks"]
     },
     "rulesDirectory": []
 }

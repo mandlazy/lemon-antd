@@ -2,21 +2,8 @@ import './style.scss';
 import React, { Component, FormEvent } from 'react';
 import { Form, Input, Button, Divider } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import Select from '../Select';
-import RadioGroup from '../RadioGroup';
-import CheckboxGroup from '../CheckboxGroup';
-import DateRangePicker from '../DateRangePicker';
-const { TextArea } = Input;
-
-const FILELDS = {
-  select: (props: object) => <Select options={[]} {...props} />,
-  input: (props: object) => <Input {...props} />,
-  radios: (props: object) => <RadioGroup options={[]} {...props} />,
-  checkboxs: (props: object) => <CheckboxGroup options={[]} {...props} />,
-  textarea: (props: object) => <TextArea {...props} />,
-  dateRange: (props: object) => <DateRangePicker {...props}/>,
-};
-
+import { COMMON_FILELDS} from '../data/fields';
+const FILELDS = COMMON_FILELDS;
 export interface IFieldItem {
   label?: string;
   rules?: any[];
@@ -27,7 +14,7 @@ export interface IFieldItem {
 }
 
 export interface IFormProps {
-  fields: IFieldItem [];
+  fields: Array<IFormProps | IFieldItem>;
   form: WrappedFormUtils;
   type?: 'horizontal' | 'vertical';
   components?: JSX.Element[];
@@ -35,7 +22,8 @@ export interface IFormProps {
   onSubmit?: (t: object) => {};
   initialValues?: any;
   title?: string;
-  dividerLine?: boolean;
+  titleDividerLine?: boolean;
+  footerDividerLine?: boolean;
   btns?: JSX.Element[];
   submitButtonText?: string;
   cabcelButtonText?: string;
@@ -84,6 +72,7 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
     rules = [],
     name,
     initialValue,
+    className,
     fieldType = 'string',
     ...ops
   }: IFieldItem ) => {
@@ -92,7 +81,7 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
     }
     const { initialValues = {}, form } = this.props;
     return (
-      <Form.Item label={label} key={name}>
+      <Form.Item label={label} key={name} className={className}>
         { form.getFieldDecorator(name, {
           initialValue: initialValues[name] || initialValue,
           rules: [...rules]
@@ -122,21 +111,33 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
       );
     }
   }
+  renderForm = (fields: any[], title?: string) => {
+    const { titleDividerLine = false, footerDividerLine = false, } = this.props;
+    return (
+      <div className='form-wrapper'>
+        { title && <h3 className='form-title'>{title}</h3> }
+        { titleDividerLine && <Divider className='form-divier' /> }
+        <div className='form-fields-wrapper'>
+          { this.renderFields(fields) }
+        </div>
+        { footerDividerLine && <Divider /> }
+      </div>
+    );
+  }
   render() {
     const {
       submitButtonText,
       cabcelButtonText,
-      fields,
-      dividerLine = false,
+      fields = [],
+      forms = [],
       title } = this.props;
     return (
       <Form className='form' onSubmit={this.handleSubmit}>
-        { title && <h3>{title}</h3> }
-        { dividerLine && <Divider className='form-divier' /> }
-        <div className='form-fields-wrapper'>
-          { this.renderFields(fields) }
-        </div>
-        { dividerLine && <Divider /> }
+        {
+          forms && forms.length ?
+          forms.map((form: any) => this.renderForm(form.fields, form.title)) :
+          this.renderForm(fields, title)
+        }
         <div className='form-btn-wrapper'>
           <Button className='form-submit-btn' type='primary' htmlType='submit'>
             { submitButtonText || '提交' }

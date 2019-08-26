@@ -1,11 +1,10 @@
 import React from 'react';
-import SiderMenu from './index';
+import Nomatch from './index';
 import renderer from 'react-test-renderer';
-import { menus } from './SiderMenu.stories';
 
-test('Link changes the class when hovered', () => {
+test('Loading init', () => {
   const component = renderer.create(
-    <SiderMenu menus={menus} />,
+    <Nomatch />,
   );
   const tree = component.toJSON();
   expect(tree).toMatchSnapshot();

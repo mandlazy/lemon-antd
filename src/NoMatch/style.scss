@@ -1,0 +1,18 @@
+.nomatch{
+  position: relative;
+  height: 100vh;
+  &-body{
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    &-404 {
+      font-size: 36px;
+    }
+    &-tip {
+      font-size: 16px;
+    }
+  }
+}

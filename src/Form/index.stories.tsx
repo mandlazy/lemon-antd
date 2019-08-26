@@ -55,6 +55,7 @@ export const fields: IFieldItem[] =  [
   },
   {
     label: '活动简介',
+    className: 'activity-field',
     type: 'textarea',
     placeholder: '介绍活动内容',
     name: 'activityIntroduction',
@@ -65,7 +66,11 @@ export const fields: IFieldItem[] =  [
 stories.addDecorator(StoryRouter()).add(
   'From',
   () => (
-    <Form dividerLine={true} title='测试一下' fields={fields} />
+    <Form
+      footerDividerLine={true}
+      titleDividerLine={true}
+      title='测试一下'
+      fields={fields} />
   ),
 );
 
@@ -73,5 +78,14 @@ stories.addDecorator(StoryRouter()).add(
   'Filter group',
   () => (
     <Form fields={fields} type='horizontal' />
+  ),
+);
+
+stories.addDecorator(StoryRouter()).add(
+  '多个表',
+  () => (
+    <Form
+      titleDividerLine={true}
+      fields={[ { title: '测试一', fields}, { title: '测试二', fields} ]}  />
   ),
 );

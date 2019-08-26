@@ -1,9 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-react-router';
-import Select, { IOption } from './index';
+import Select from './index';
 import withAsyncInit from '../WithAsyncInit';
-
+import { IOption } from '../utils/Option';
 const AsyncSelect = withAsyncInit(Select);
 const stories = storiesOf('Select', module);
 export const options: Array<IOption | string> = ['选项1', '选项2', '选项3'];
