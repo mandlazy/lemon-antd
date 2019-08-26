@@ -65,17 +65,32 @@ class DForm extends Component {
                 React.createElement("div", { className: 'form-fields-wrapper' }, this.renderFields(fields)),
                 footerDividerLine && React.createElement(Divider, null)));
         };
+        this.renderBtns = () => {
+            const { btns = this.defaultBtns } = this.props;
+            return (React.createElement("div", { className: 'form-btn-wrapper' }, btns.map((btn, index) => {
+                const { text, ...otherOps } = btn;
+                return (React.createElement(Button, Object.assign({ key: index }, otherOps), text));
+            })));
+        };
         Object.assign(FILELDS, props.components);
+        this.defaultBtns = [{
+                type: 'primary',
+                htmlType: 'submit',
+                text: '提交',
+                className: 'form-submit-btn'
+            }, {
+                className: 'form-cancel-btn',
+                onClick: this.handleCancel,
+                text: '取消'
+            }];
     }
     render() {
-        const { submitButtonText, cabcelButtonText, fields = [], forms = [], title } = this.props;
+        const { fields = [], multiple = false, title } = this.props;
         return (React.createElement(Form, { className: 'form', onSubmit: this.handleSubmit },
-            forms && forms.length ?
-                forms.map((form) => this.renderForm(form.fields, form.title)) :
+            multiple && fields.length ?
+                fields.map((form) => this.renderForm(form.fields, form.title)) :
                 this.renderForm(fields, title),
-            React.createElement("div", { className: 'form-btn-wrapper' },
-                React.createElement(Button, { className: 'form-submit-btn', type: 'primary', htmlType: 'submit' }, submitButtonText || '提交'),
-                React.createElement(Button, { className: 'form-cancel-btn', onClick: this.handleCancel }, cabcelButtonText || '取消'))));
+            this.renderBtns()));
     }
 }
 export default Form.create({ name: 'DForm' })(DForm);

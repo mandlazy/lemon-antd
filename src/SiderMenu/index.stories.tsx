@@ -30,6 +30,6 @@ stories.addDecorator(StoryRouter()).add(
       renderLink={(children, to) => (<Link to={to}>{children}</Link>)}
       currentPath={'/account/list'}
       menus={menus}
-    />
+    ><h2>dd</h2></SiderMenu>
   ),
 );

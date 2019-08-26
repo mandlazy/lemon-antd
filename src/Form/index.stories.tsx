@@ -86,6 +86,26 @@ stories.addDecorator(StoryRouter()).add(
   () => (
     <Form
       titleDividerLine={true}
+      btns={[{
+        type: 'primary',
+        htmlType: 'submit',
+        text: '登录'
+      }]}
+      multiple={true}
       fields={[ { title: '测试一', fields}, { title: '测试二', fields} ]}  />
+  ),
+);
+
+stories.addDecorator(StoryRouter()).add(
+  '自定义btns',
+  () => (
+    <Form
+      titleDividerLine={true}
+      btns={[{
+        type: 'primary',
+        htmlType: 'submit',
+        text: '登录'
+      }]}
+      fields={fields}  />
   ),
 );

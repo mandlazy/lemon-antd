@@ -1,8 +1,9 @@
 import './style.scss';
 import React, { Component, FormEvent } from 'react';
-import { Form, Input, Button, Divider } from 'antd';
+import { Form, Button, Divider } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { COMMON_FILELDS} from '../data/fields';
+import { ButtonProps } from 'antd/lib/button';
 const FILELDS = COMMON_FILELDS;
 export interface IFieldItem {
   label?: string;
@@ -16,6 +17,7 @@ export interface IFieldItem {
 export interface IFormProps {
   fields: Array<IFormProps | IFieldItem>;
   form: WrappedFormUtils;
+  multiple?: boolean;
   type?: 'horizontal' | 'vertical';
   components?: JSX.Element[];
   onCancel?: () => {};
@@ -24,11 +26,17 @@ export interface IFormProps {
   title?: string;
   titleDividerLine?: boolean;
   footerDividerLine?: boolean;
-  btns?: JSX.Element[];
+  btns?: IBtnProps[];
   submitButtonText?: string;
   cabcelButtonText?: string;
   [ propName: string ]: any;
 }
+
+interface IBtnProps extends ButtonProps {
+  text: string;
+  [ propName: string ]: any;
+}
+
 const renderField = (ops: any) => {
   const { type = 'input', ...props } = ops;
   type fieldType = keyof typeof FILELDS;
@@ -44,9 +52,20 @@ const trimRule = {
 };
 
 class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
+  defaultBtns: IBtnProps[];
   constructor(props: IFormProps) {
     super(props);
     Object.assign(FILELDS, props.components);
+    this.defaultBtns = [{
+      type: 'primary',
+      htmlType: 'submit',
+      text: '提交',
+      className: 'form-submit-btn'
+    }, {
+      className: 'form-cancel-btn',
+      onClick: this.handleCancel,
+      text: '取消'
+    }];
   }
   handleCancel = () => {
     const { onCancel } = this.props;
@@ -124,28 +143,34 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
       </div>
     );
   }
+  renderBtns = () => {
+    const { btns = this.defaultBtns } = this.props;
+    return (
+      <div className='form-btn-wrapper'>
+        {
+          btns.map((btn: IBtnProps, index: number) => {
+            const { text, ...otherOps } = btn;
+            return (
+              <Button key={index} { ...otherOps }>{text}</Button>
+            );
+          })
+        }
+      </div>
+    );
+  }
   render() {
     const {
-      submitButtonText,
-      cabcelButtonText,
       fields = [],
-      forms = [],
+      multiple = false,
       title } = this.props;
     return (
       <Form className='form' onSubmit={this.handleSubmit}>
         {
-          forms && forms.length ?
-          forms.map((form: any) => this.renderForm(form.fields, form.title)) :
+          multiple && fields.length ?
+          fields.map((form: any) => this.renderForm(form.fields, form.title)) :
           this.renderForm(fields, title)
         }
-        <div className='form-btn-wrapper'>
-          <Button className='form-submit-btn' type='primary' htmlType='submit'>
-            { submitButtonText || '提交' }
-          </Button>
-          <Button className='form-cancel-btn' onClick={this.handleCancel}>
-            { cabcelButtonText || '取消' }
-          </Button>
-        </div>
+        { this.renderBtns() }
       </Form>
     );
   }
