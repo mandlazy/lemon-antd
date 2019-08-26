@@ -162,9 +162,10 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
     const {
       fields = [],
       multiple = false,
-      title } = this.props;
+      title,
+      className = '' } = this.props;
     return (
-      <Form className='form' onSubmit={this.handleSubmit}>
+      <Form className={'form ' + className} onSubmit={this.handleSubmit}>
         {
           multiple && fields.length ?
           fields.map((form: any) => this.renderForm(form.fields, form.title)) :

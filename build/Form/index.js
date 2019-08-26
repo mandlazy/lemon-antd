@@ -85,8 +85,8 @@ class DForm extends Component {
             }];
     }
     render() {
-        const { fields = [], multiple = false, title } = this.props;
-        return (React.createElement(Form, { className: 'form', onSubmit: this.handleSubmit },
+        const { fields = [], multiple = false, title, className = '' } = this.props;
+        return (React.createElement(Form, { className: 'form ' + className, onSubmit: this.handleSubmit },
             multiple && fields.length ?
                 fields.map((form) => this.renderForm(form.fields, form.title)) :
                 this.renderForm(fields, title),
