@@ -10,4 +10,6 @@ export { default as PageLoading } from './PageLoading';
 export { default as Loading } from './Loading';
 export { default as NoMatch } from './NoMatch';
 export { default as Table } from './Table';
+export { default as EditableTable } from './EditableTable';
+export { default as Overlayer } from './Overlayer';
 //# sourceMappingURL=index.js.map
