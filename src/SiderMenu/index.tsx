@@ -164,6 +164,7 @@ const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
     renderLink,
     iconComponent,
     iconOps,
+    children,
     useDefaultSelectKey = true,
     ...otherProps
   }) => {
@@ -179,6 +180,7 @@ const SiderMenu: React.FunctionComponent<ISiderMenuProps> = ({
       collapsible
       className={'sider ' + className}
       collapsed={collapsed}>
+      { children }
       <Menu
         theme={theme}
         mode='inline'
