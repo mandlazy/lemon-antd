@@ -18,6 +18,7 @@ export interface ISiderMenuProps {
     defaultSelectKey?: string;
     useDefaultSelectKey?: boolean;
     iconComponent?: ComponentType;
+    iconOps?: any;
     renderLink?: FunctionComponent<JSX.Element>;
     [propName: string]: any;
 }
