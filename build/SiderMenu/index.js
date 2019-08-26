@@ -72,9 +72,10 @@ const handleSelectKey = (useDefault, items, value) => {
     }
     return selectOps;
 };
-const SiderMenu = ({ menus = [], width, sort, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink, iconComponent, iconOps, useDefaultSelectKey = true, ...otherProps }) => {
+const SiderMenu = ({ menus = [], width, sort, className = '', collapsed = false, theme = 'dark', currentPath, defaultSelectKey, renderLink, iconComponent, iconOps, children, useDefaultSelectKey = true, ...otherProps }) => {
     const selectedOps = handleSelectKey(useDefaultSelectKey, menus, defaultSelectKey || currentPath);
     return (React.createElement(Layout.Sider, { width: width, trigger: null, collapsible: true, className: 'sider ' + className, collapsed: collapsed },
+        children,
         React.createElement(Menu, Object.assign({ theme: theme, mode: 'inline' }, selectedOps, otherProps), menus && sortItem(menus, sort).map((item) => item.children && item.children.length ?
             renderSubMenu(item, renderLink, iconComponent, iconOps) :
             renderMenuItem(item, renderLink, iconComponent, iconOps)))));
