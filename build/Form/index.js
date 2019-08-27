@@ -73,7 +73,6 @@ class DForm extends Component {
                 return (React.createElement(Button, Object.assign({ key: index }, otherOps), text));
             })));
         };
-        Object.assign(FILELDS, props.components);
         this.defaultBtns = [{
                 type: 'primary',
                 htmlType: 'submit',
@@ -86,7 +85,8 @@ class DForm extends Component {
             }];
     }
     render() {
-        const { fields = [], multiple = false, title, className } = this.props;
+        const { fields = [], multiple = false, title, components, className } = this.props;
+        Object.assign(FILELDS, components);
         return (React.createElement(Form, { className: 'form ' + className, onSubmit: this.handleSubmit },
             multiple && fields.length ?
                 fields.map((form) => this.renderForm(form.fields, form.title)) :

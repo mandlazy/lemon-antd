@@ -55,7 +55,6 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
   defaultBtns: IBtnProps[];
   constructor(props: IFormProps) {
     super(props);
-    Object.assign(FILELDS, props.components);
     this.defaultBtns = [{
       type: 'primary',
       htmlType: 'submit',
@@ -164,7 +163,9 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
       fields = [],
       multiple = false,
       title,
+      components,
       className} = this.props;
+    Object.assign(FILELDS, components);
     return (
       <Form
         className={'form ' + className}
