@@ -51,7 +51,7 @@ const trimRule = {
   }
 };
 
-class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
+class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
   defaultBtns: IBtnProps[];
   constructor(props: IFormProps) {
     super(props);
@@ -88,13 +88,14 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
   }
   renderField = ({
     label,
-    rules = [],
+    rules,
     name,
     initialValue,
     className,
     fieldType = 'string',
     ...ops
   }: IFieldItem ) => {
+    rules = [...(rules || [])];
     if (fieldType === 'string') {
       rules.unshift(trimRule);
     }
@@ -103,7 +104,7 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
       <Form.Item label={label} key={name} className={className}>
         { form.getFieldDecorator(name, {
           initialValue: initialValues[name] || initialValue,
-          rules: [...rules]
+          rules,
         })(renderField(ops))}
       </Form.Item>
     );
@@ -163,9 +164,11 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils,  }> {
       fields = [],
       multiple = false,
       title,
-      className = '' } = this.props;
+      className} = this.props;
     return (
-      <Form className={'form ' + className} onSubmit={this.handleSubmit}>
+      <Form
+        className={'form ' + className}
+        onSubmit={this.handleSubmit}>
         {
           multiple && fields.length ?
           fields.map((form: any) => this.renderForm(form.fields, form.title)) :

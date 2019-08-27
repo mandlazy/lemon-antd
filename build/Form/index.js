@@ -38,14 +38,15 @@ class DForm extends Component {
                 }
             });
         };
-        this.renderField = ({ label, rules = [], name, initialValue, className, fieldType = 'string', ...ops }) => {
+        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', ...ops }) => {
+            rules = [...(rules || [])];
             if (fieldType === 'string') {
                 rules.unshift(trimRule);
             }
             const { initialValues = {}, form } = this.props;
             return (React.createElement(Form.Item, { label: label, key: name, className: className }, form.getFieldDecorator(name, {
                 initialValue: initialValues[name] || initialValue,
-                rules: [...rules]
+                rules,
             })(renderField(ops))));
         };
         this.renderFields = (fields) => {
@@ -85,7 +86,7 @@ class DForm extends Component {
             }];
     }
     render() {
-        const { fields = [], multiple = false, title, className = '' } = this.props;
+        const { fields = [], multiple = false, title, className } = this.props;
         return (React.createElement(Form, { className: 'form ' + className, onSubmit: this.handleSubmit },
             multiple && fields.length ?
                 fields.map((form) => this.renderForm(form.fields, form.title)) :
