@@ -37,7 +37,7 @@ interface IBtnProps extends ButtonProps {
   [ propName: string ]: any;
 }
 
-const renderField = (ops: any) => {
+const _renderField = (ops: any) => {
   const { type = 'input', ...props } = ops;
   type fieldType = keyof typeof FILELDS;
   const resType: fieldType = type;
@@ -55,6 +55,7 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
   defaultBtns: IBtnProps[];
   constructor(props: IFormProps) {
     super(props);
+    Object.assign(FILELDS, props.components);
     this.defaultBtns = [{
       type: 'primary',
       htmlType: 'submit',
@@ -104,7 +105,7 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
         { form.getFieldDecorator(name, {
           initialValue: initialValues[name] || initialValue,
           rules,
-        })(renderField(ops))}
+        })(_renderField(ops))}
       </Form.Item>
     );
   }

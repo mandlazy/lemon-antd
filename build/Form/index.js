@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Form, Button, Divider } from 'antd';
 import { COMMON_FILELDS } from '../data/fields';
 const FILELDS = COMMON_FILELDS;
-const renderField = (ops) => {
+const _renderField = (ops) => {
     const { type = 'input', ...props } = ops;
     const resType = type;
     return FILELDS[resType]({ ...props });
@@ -47,7 +47,7 @@ class DForm extends Component {
             return (React.createElement(Form.Item, { label: label, key: name, className: className }, form.getFieldDecorator(name, {
                 initialValue: initialValues[name] || initialValue,
                 rules,
-            })(renderField(ops))));
+            })(_renderField(ops))));
         };
         this.renderFields = (fields) => {
             const { type = 'vertical', rowGutter = 20 } = this.props;
@@ -73,6 +73,7 @@ class DForm extends Component {
                 return (React.createElement(Button, Object.assign({ key: index }, otherOps), text));
             })));
         };
+        Object.assign(FILELDS, props.components);
         this.defaultBtns = [{
                 type: 'primary',
                 htmlType: 'submit',
