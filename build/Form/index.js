@@ -20,7 +20,8 @@ class DForm extends Component {
     constructor(props) {
         super(props);
         this.handleCancel = () => {
-            const { onCancel } = this.props;
+            const { onCancel, form } = this.props;
+            form.resetFields();
             if (onCancel) {
                 onCancel();
             }
@@ -29,12 +30,15 @@ class DForm extends Component {
             if (e) {
                 e.preventDefault();
             }
-            const { onSubmit, form } = this.props;
+            const { onSubmit, onError, form } = this.props;
             form.validateFields((errs, values) => {
                 if (!errs) {
                     if (onSubmit) {
                         onSubmit(values);
                     }
+                }
+                else {
+                    onError(errs);
                 }
             });
         };
@@ -68,21 +72,21 @@ class DForm extends Component {
         };
         this.renderBtns = () => {
             const { btns = this.defaultBtns } = this.props;
-            return (React.createElement("div", { className: 'form-btn-wrapper' }, btns.map((btn, index) => {
+            return (React.createElement("div", { className: 'form-btn-wrapper' }, [...btns, this.cancelBtn].map((btn, index) => {
                 const { text, ...otherOps } = btn;
                 return (React.createElement(Button, Object.assign({ key: index }, otherOps), text));
             })));
         };
-        Object.assign(FILELDS, props.components);
+        this.cancelBtn = {
+            className: 'form-cancel-btn',
+            onClick: this.handleCancel,
+            text: props.cancelBtnText || '取消'
+        };
         this.defaultBtns = [{
                 type: 'primary',
                 htmlType: 'submit',
                 text: '提交',
                 className: 'form-submit-btn'
-            }, {
-                className: 'form-cancel-btn',
-                onClick: this.handleCancel,
-                text: '取消'
             }];
     }
     render() {

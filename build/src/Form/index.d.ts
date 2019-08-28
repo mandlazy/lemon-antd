@@ -35,6 +35,7 @@ declare class DForm extends Component<IFormProps & {
     form: WrappedFormUtils;
 }> {
     defaultBtns: IBtnProps[];
+    cancelBtn: IBtnProps;
     constructor(props: IFormProps);
     handleCancel: () => void;
     handleSubmit: (e: React.FormEvent<Element>) => void;

@@ -53,22 +53,24 @@ const trimRule = {
 
 class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
   defaultBtns: IBtnProps[];
+  cancelBtn: IBtnProps;
   constructor(props: IFormProps) {
     super(props);
-    Object.assign(FILELDS, props.components);
+    this.cancelBtn = {
+      className: 'form-cancel-btn',
+      onClick: this.handleCancel,
+      text: props.cancelBtnText || '取消'
+    };
     this.defaultBtns = [{
       type: 'primary',
       htmlType: 'submit',
       text: '提交',
       className: 'form-submit-btn'
-    }, {
-      className: 'form-cancel-btn',
-      onClick: this.handleCancel,
-      text: '取消'
     }];
   }
   handleCancel = () => {
-    const { onCancel } = this.props;
+    const { onCancel, form } = this.props;
+    form.resetFields();
     if (onCancel) {
       onCancel();
     }
@@ -77,12 +79,14 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
     if (e) {
       e.preventDefault();
     }
-    const { onSubmit, form } = this.props;
+    const { onSubmit, onError, form } = this.props;
     form.validateFields((errs: any, values: object) => {
       if (!errs) {
         if (onSubmit) {
           onSubmit(values);
         }
+      } else {
+        onError(errs);
       }
     });
   }
@@ -149,7 +153,7 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
     return (
       <div className='form-btn-wrapper'>
         {
-          btns.map((btn: IBtnProps, index: number) => {
+          [...btns, this.cancelBtn].map((btn: IBtnProps, index: number) => {
             const { text, ...otherOps } = btn;
             return (
               <Button key={index} { ...otherOps }>{text}</Button>
