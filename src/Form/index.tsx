@@ -149,11 +149,15 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
     );
   }
   renderBtns = () => {
-    const { btns = this.defaultBtns } = this.props;
+    const { showCancelBtn } = this.props;
+    let { btns = this.defaultBtns } = this.props;
+    if (showCancelBtn) {
+      btns = [...btns, this.cancelBtn];
+    }
     return (
       <div className='form-btn-wrapper'>
         {
-          [...btns, this.cancelBtn].map((btn: IBtnProps, index: number) => {
+          btns.map((btn: IBtnProps, index: number) => {
             const { text, ...otherOps } = btn;
             return (
               <Button key={index} { ...otherOps }>{text}</Button>

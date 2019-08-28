@@ -71,8 +71,12 @@ class DForm extends Component {
                 footerDividerLine && React.createElement(Divider, null)));
         };
         this.renderBtns = () => {
-            const { btns = this.defaultBtns } = this.props;
-            return (React.createElement("div", { className: 'form-btn-wrapper' }, [...btns, this.cancelBtn].map((btn, index) => {
+            const { showCancelBtn } = this.props;
+            let { btns = this.defaultBtns } = this.props;
+            if (showCancelBtn) {
+                btns = [...btns, this.cancelBtn];
+            }
+            return (React.createElement("div", { className: 'form-btn-wrapper' }, btns.map((btn, index) => {
                 const { text, ...otherOps } = btn;
                 return (React.createElement(Button, Object.assign({ key: index }, otherOps), text));
             })));
