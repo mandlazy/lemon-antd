@@ -1,5 +1,5 @@
 import './style.scss';
-import React, { Component, FormEvent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { Form, Button, Divider } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { COMMON_FILELDS} from '../data/fields';
@@ -51,7 +51,7 @@ const trimRule = {
   }
 };
 
-class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
+class DForm extends PureComponent<IFormProps & { form: WrappedFormUtils }> {
   defaultBtns: IBtnProps[];
   cancelBtn: IBtnProps;
   constructor(props: IFormProps) {
@@ -135,10 +135,10 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
       );
     }
   }
-  renderForm = (fields: any[], title?: string) => {
+  renderForm = (fields: any[], index: any, title?: string) => {
     const { titleDividerLine = false, footerDividerLine = false, } = this.props;
     return (
-      <div className='form-wrapper'>
+      <div className='form-wrapper' key={index}>
         { title && <h3 className='form-title'>{title}</h3> }
         { titleDividerLine && <Divider className='form-divier' /> }
         <div className='form-fields-wrapper'>
@@ -181,7 +181,7 @@ class DForm extends Component<IFormProps & { form: WrappedFormUtils }> {
         onSubmit={this.handleSubmit}>
         {
           multiple && fields.length ?
-          fields.map((form: any) => this.renderForm(form.fields, form.title)) :
+          fields.map((form: any, index) => this.renderForm(form.fields, index, form.title)) :
           this.renderForm(fields, title)
         }
         { this.renderBtns() }

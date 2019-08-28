@@ -1,5 +1,5 @@
 import './style.scss';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Form, Button, Divider } from 'antd';
 import { COMMON_FILELDS } from '../data/fields';
 const FILELDS = COMMON_FILELDS;
@@ -16,7 +16,7 @@ const trimRule = {
             return value.toString();
     }
 };
-class DForm extends Component {
+class DForm extends PureComponent {
     constructor(props) {
         super(props);
         this.handleCancel = () => {
@@ -62,9 +62,9 @@ class DForm extends Component {
                 return (React.createElement("div", { className: 'form-horizontal-fields-wrapper' }, fields.map(({ colWidth, ...field }, index) => (React.createElement("div", { style: { padding: `0 ${rowGutter}px`, width: colWidth ? `${colWidth}px` : 'fit-content' }, className: 'form-horizontal-field', key: index }, this.renderField(field))))));
             }
         };
-        this.renderForm = (fields, title) => {
+        this.renderForm = (fields, index, title) => {
             const { titleDividerLine = false, footerDividerLine = false, } = this.props;
-            return (React.createElement("div", { className: 'form-wrapper' },
+            return (React.createElement("div", { className: 'form-wrapper', key: index },
                 title && React.createElement("h3", { className: 'form-title' }, title),
                 titleDividerLine && React.createElement(Divider, { className: 'form-divier' }),
                 React.createElement("div", { className: 'form-fields-wrapper' }, this.renderFields(fields)),
@@ -98,7 +98,7 @@ class DForm extends Component {
         Object.assign(FILELDS, components);
         return (React.createElement(Form, { className: 'form ' + className, onSubmit: this.handleSubmit },
             multiple && fields.length ?
-                fields.map((form) => this.renderForm(form.fields, form.title)) :
+                fields.map((form, index) => this.renderForm(form.fields, index, form.title)) :
                 this.renderForm(fields, title),
             this.renderBtns()));
     }

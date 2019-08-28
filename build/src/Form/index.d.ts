@@ -1,5 +1,5 @@
 import './style.scss';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { ButtonProps } from 'antd/lib/button';
 export interface IFieldItem {
@@ -31,7 +31,7 @@ interface IBtnProps extends ButtonProps {
     text: string;
     [propName: string]: any;
 }
-declare class DForm extends Component<IFormProps & {
+declare class DForm extends PureComponent<IFormProps & {
     form: WrappedFormUtils;
 }> {
     defaultBtns: IBtnProps[];
@@ -41,7 +41,7 @@ declare class DForm extends Component<IFormProps & {
     handleSubmit: (e: React.FormEvent<Element>) => void;
     renderField: ({ label, rules, name, initialValue, className, fieldType, ...ops }: IFieldItem) => JSX.Element;
     renderFields: (fields: any[]) => JSX.Element | JSX.Element[];
-    renderForm: (fields: any[], title?: string | undefined) => JSX.Element;
+    renderForm: (fields: any[], index: any, title?: string | undefined) => JSX.Element;
     renderBtns: () => JSX.Element;
     render(): JSX.Element;
 }
