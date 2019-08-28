@@ -2,11 +2,33 @@ import './style.scss';
 import React, { PureComponent } from 'react';
 import { Form, Button, Divider } from 'antd';
 import { COMMON_FILELDS } from '../data/fields';
+import Label from '../Label';
 const FILELDS = COMMON_FILELDS;
 const _renderField = (ops) => {
-    const { type = 'input', ...props } = ops;
+    const { type = 'input', useDedefinedViewComponent, ...props } = ops;
     const resType = type;
     return FILELDS[resType]({ ...props });
+};
+const _renderFieldViewing = (ops) => {
+    const { options, label, className = '', name, index, components } = ops;
+    let { value = '', useDefinedViewingComponent } = ops;
+    useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
+    if (options && value) {
+        const text = options.find((option) => {
+            if (typeof option === 'object') {
+                return option.value === value;
+            }
+            else {
+                return option === value;
+            }
+        });
+        value = typeof text === 'object' ? text.text : text;
+    }
+    if (value && useDefinedViewingComponent) {
+        value = _renderField({ ...ops, viewing: true, value });
+    }
+    return (React.createElement(Label, { key: name + index, title: label, className: 'form-label-wrapper ' + className },
+        React.createElement("div", { className: 'form-label-text' }, value)));
 };
 const trimRule = {
     transform: (value) => {
@@ -38,33 +60,37 @@ class DForm extends PureComponent {
                     }
                 }
                 else {
-                    onError(errs);
+                    if (onError) {
+                        onError(errs);
+                    }
                 }
             });
         };
-        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', ...ops }) => {
+        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', ...ops }, index) => {
             rules = [...(rules || [])];
             if (fieldType === 'string') {
                 rules.unshift(trimRule);
             }
-            const { initialValues = {}, form } = this.props;
-            return (React.createElement(Form.Item, { label: label, key: name, className: className }, form.getFieldDecorator(name, {
-                initialValue: initialValues[name] || initialValue,
-                rules,
-            })(_renderField(ops))));
+            const { initialValues = {}, form, viewing, components } = this.props;
+            return (viewing ?
+                _renderFieldViewing({ ...ops, label, className, name, index, components }) :
+                React.createElement(Form.Item, { label: label, key: name + index, className: className }, form.getFieldDecorator(name, {
+                    initialValue: initialValues[name] || initialValue,
+                    rules,
+                })(_renderField(ops))));
         };
         this.renderFields = (fields) => {
             const { type = 'vertical', rowGutter = 20 } = this.props;
             if (type === 'vertical') {
-                return fields.map((field) => this.renderField(field));
+                return fields.map((field, index) => this.renderField(field, index));
             }
             else {
-                return (React.createElement("div", { className: 'form-horizontal-fields-wrapper' }, fields.map(({ colWidth, ...field }, index) => (React.createElement("div", { style: { padding: `0 ${rowGutter}px`, width: colWidth ? `${colWidth}px` : 'fit-content' }, className: 'form-horizontal-field', key: index }, this.renderField(field))))));
+                return (React.createElement("div", { className: 'form-horizontal-fields-wrapper' }, fields.map(({ colWidth, ...field }, index) => (React.createElement("div", { style: { padding: `0 ${rowGutter}px`, width: colWidth ? `${colWidth}px` : 'fit-content' }, className: 'form-horizontal-field', key: index }, this.renderField(field, index))))));
             }
         };
-        this.renderForm = (fields, index, title) => {
+        this.renderForm = (fields, title) => {
             const { titleDividerLine = false, footerDividerLine = false, } = this.props;
-            return (React.createElement("div", { className: 'form-wrapper', key: index },
+            return (React.createElement("div", { className: 'form-wrapper', key: title },
                 title && React.createElement("h3", { className: 'form-title' }, title),
                 titleDividerLine && React.createElement(Divider, { className: 'form-divier' }),
                 React.createElement("div", { className: 'form-fields-wrapper' }, this.renderFields(fields)),
@@ -98,7 +124,7 @@ class DForm extends PureComponent {
         Object.assign(FILELDS, components);
         return (React.createElement(Form, { className: 'form ' + className, onSubmit: this.handleSubmit },
             multiple && fields.length ?
-                fields.map((form, index) => this.renderForm(form.fields, index, form.title)) :
+                fields.map((form) => this.renderForm(form.fields, form.title)) :
                 this.renderForm(fields, title),
             this.renderBtns()));
     }

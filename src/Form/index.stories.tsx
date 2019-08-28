@@ -1,7 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent, SVGProps } from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-react-router';
 import Form, { IFieldItem } from './index';
+import { Input } from 'antd';
+
+class Imge extends PureComponent<any> {
+  render() {
+    const { value, viewing } = this.props;
+    return (
+      viewing ? <img src={value}/> : <Input />
+    );
+  }
+}
+
+const components = {
+  image: (props: any) => <Imge {...props}/>
+};
 
 const stories = storiesOf('Form', module);
 export const fields: IFieldItem[] =  [
@@ -49,8 +63,10 @@ export const fields: IFieldItem[] =  [
   {
     label: '免息券名称',
     name: 'couponList',
-    type: 'radios',
+    type: 'image',
+    value: 'b',
     fieldType: 'array',
+    useDefinedViewingComponent: true,
     options: ['a', 'b', 'c']
   },
   {
@@ -61,6 +77,7 @@ export const fields: IFieldItem[] =  [
     name: 'activityIntroduction',
     maxLength: 200,
     rows: 4,
+    rules: [{ required: true }]
   }
 ];
 const field1 = [
@@ -68,6 +85,7 @@ const field1 = [
     label: '名称',
     name: 'couponList1',
     fieldType: 'array',
+    value: 'dadadd',
     rules: [{ required: true }]
   },
   {
@@ -75,6 +93,7 @@ const field1 = [
     name: 'couponList',
     type: 'radios',
     fieldType: 'array',
+    value: 'a',
     options: ['a', 'b', 'c']
   },
   {
@@ -82,9 +101,23 @@ const field1 = [
     className: 'activity-field',
     type: 'textarea',
     placeholder: '介绍活动内容',
+    name: 'activityIntroduction1',
+    maxLength: 200,
+    value: 'dasddadsaadasd',
+    rows: 4,
+    rules: [{ required: true }]
+  }
+];
+const field2 = [
+  {
+    label: '活动简介',
+    className: 'activity-field1',
+    type: 'textarea',
+    placeholder: '介绍活动内容',
     name: 'activityIntroduction',
     maxLength: 200,
     rows: 4,
+    rules: [{ required: true }]
   }
 ];
 stories.addDecorator(StoryRouter()).add(
@@ -121,7 +154,10 @@ stories.addDecorator(StoryRouter()).add(
 );
 
 class Page extends Component {
-  fields: any = { a: fields, b: field1 };
+  fields: any = { a: [
+    {title: '1', fields},
+    {title: '2', fields: field1} ],
+    b: [ {title: '3', fields: field1 }] };
   state = {
     type: 'a'
   };
@@ -132,16 +168,19 @@ class Page extends Component {
   }
   render() {
     const { type } = this.state;
-    fields[0].onChange = this.renderField;
+    this.fields[type][0].fields[0].onChange = this.renderField;
     return (
       <Form
+        viewing={true}
         titleDividerLine={true}
+        multiple={true}
+        components={components}
         btns={[{
           type: 'primary',
           htmlType: 'submit',
           text: '登录'
         }]}
-        fields={this.fields[type]}  />
+        fields={this.fields[type][0]}  />
     );
   }
 }

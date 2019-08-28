@@ -27,7 +27,8 @@
         "curly": [true, "ignore-same-line"],
         "object-literal-sort-keys": false,
         "member-access": false,
-        "no-unused-expression": [true, "allow-fast-null-checks"]
+        "no-unused-expression": [true, "allow-fast-null-checks"],
+        "max-classes-per-file": [true, 5, "exclude-class-expressions"]
     },
     "rulesDirectory": []
 }

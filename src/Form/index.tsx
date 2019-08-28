@@ -4,6 +4,7 @@ import { Form, Button, Divider } from 'antd';
 import { WrappedFormUtils, FormComponentProps } from 'antd/lib/form/Form';
 import { COMMON_FILELDS} from '../data/fields';
 import { ButtonProps } from 'antd/lib/button';
+import Label from '../Label';
 const FILELDS = COMMON_FILELDS;
 export interface IFieldItem {
   label?: string;
@@ -19,7 +20,7 @@ export interface IFormProps {
   form: WrappedFormUtils;
   multiple?: boolean;
   type?: 'horizontal' | 'vertical';
-  components?: JSX.Element[];
+  components?: any;
   onCancel?: () => {};
   onSubmit?: (t: object) => {};
   initialValues?: any;
@@ -38,10 +39,45 @@ interface IBtnProps extends ButtonProps {
 }
 
 const _renderField = (ops: any) => {
-  const { type = 'input', ...props } = ops;
+  const { type = 'input', useDedefinedViewComponent, ...props } = ops;
   type fieldType = keyof typeof FILELDS;
   const resType: fieldType = type;
   return FILELDS[resType]({ ...props });
+};
+
+const _renderFieldViewing = (ops: any) => {
+    const {
+      options,
+      label,
+      className = '',
+      name,
+      index,
+      components } = ops;
+    let {
+      value = '',
+      useDefinedViewingComponent } = ops;
+    useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
+    if (options && value) {
+      const text = options.find((option: any) => {
+        if (typeof option === 'object') {
+          return option.value === value;
+        } else {
+          return option === value;
+        }
+      });
+      value = typeof text === 'object' ? text.text : text;
+    }
+    if (value && useDefinedViewingComponent) {
+      value = _renderField({...ops, viewing: true, value});
+    }
+    return (
+      <Label
+        key={name + index}
+        title={label}
+        className={'form-label-wrapper ' + className}>
+        <div className='form-label-text'>{ value }</div>
+      </Label>
+    );
 };
 
 const trimRule = {
@@ -86,7 +122,9 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
           onSubmit(values);
         }
       } else {
-        onError(errs);
+        if (onError) {
+          onError(errs);
+        }
       }
     });
   }
@@ -98,14 +136,16 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     className,
     fieldType = 'string',
     ...ops
-  }: IFieldItem ) => {
+  }: IFieldItem, index: number ) => {
     rules = [...(rules || [])];
     if (fieldType === 'string') {
       rules.unshift(trimRule);
     }
-    const { initialValues = {}, form } = this.props;
+    const { initialValues = {}, form, viewing, components } = this.props;
     return (
-      <Form.Item label={label} key={name} className={className}>
+      viewing ?
+      _renderFieldViewing({ ...ops, label, className, name, index, components }) :
+      <Form.Item label={label} key={name + index} className={className}>
         { form.getFieldDecorator(name, {
           initialValue: initialValues[name] || initialValue,
           rules,
@@ -116,7 +156,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
   renderFields = (fields: any[]) => {
     const { type = 'vertical', rowGutter = 20 } = this.props;
     if (type === 'vertical') {
-      return fields.map((field) => this.renderField(field));
+      return fields.map((field, index) => this.renderField(field, index));
     } else {
       return (
         <div
@@ -127,7 +167,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
                 style={{ padding: `0 ${rowGutter}px`, width: colWidth ? `${colWidth}px` : 'fit-content' }}
                 className='form-horizontal-field'
                 key={index}>
-                { this.renderField(field) }
+                { this.renderField(field, index) }
               </div>
             ))
           }
@@ -135,10 +175,10 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
       );
     }
   }
-  renderForm = (fields: any[], index: any, title?: string) => {
+  renderForm = (fields: any[], title?: string) => {
     const { titleDividerLine = false, footerDividerLine = false, } = this.props;
     return (
-      <div className='form-wrapper' key={index}>
+      <div className='form-wrapper' key={title}>
         { title && <h3 className='form-title'>{title}</h3> }
         { titleDividerLine && <Divider className='form-divier' /> }
         <div className='form-fields-wrapper'>
@@ -181,7 +221,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
         onSubmit={this.handleSubmit}>
         {
           multiple && fields.length ?
-          fields.map((form: any, index) => this.renderForm(form.fields, index, form.title)) :
+          fields.map((form: any) => this.renderForm(form.fields, form.title)) :
           this.renderForm(fields, title)
         }
         { this.renderBtns() }

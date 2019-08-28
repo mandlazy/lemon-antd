@@ -18,4 +18,14 @@
       box-sizing: border-box;
     }
   }
+  &-label-wrapper {
+    display: block;
+    .label-title{
+      display: inline-block;
+    }
+  }
+  &-label-text {
+    display: inline-block;
+    text-indent: 10px;
+  }
 }

@@ -15,7 +15,7 @@ export interface IFormProps {
     form: WrappedFormUtils;
     multiple?: boolean;
     type?: 'horizontal' | 'vertical';
-    components?: JSX.Element[];
+    components?: any;
     onCancel?: () => {};
     onSubmit?: (t: object) => {};
     initialValues?: any;
@@ -37,9 +37,9 @@ declare class DForm extends PureComponent<IFormProps & FormComponentProps> {
     constructor(props: IFormProps);
     handleCancel: () => void;
     handleSubmit: (e: React.FormEvent<Element>) => void;
-    renderField: ({ label, rules, name, initialValue, className, fieldType, ...ops }: IFieldItem) => JSX.Element;
+    renderField: ({ label, rules, name, initialValue, className, fieldType, ...ops }: IFieldItem, index: number) => JSX.Element;
     renderFields: (fields: any[]) => JSX.Element | JSX.Element[];
-    renderForm: (fields: any[], index: any, title?: string | undefined) => JSX.Element;
+    renderForm: (fields: any[], title?: string | undefined) => JSX.Element;
     renderBtns: () => JSX.Element;
     render(): JSX.Element;
 }
