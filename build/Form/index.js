@@ -103,5 +103,5 @@ class DForm extends PureComponent {
             this.renderBtns()));
     }
 }
-export default Form.create({ name: 'DForm' })(DForm);
+export default Form.create()(DForm);
 //# sourceMappingURL=index.js.map

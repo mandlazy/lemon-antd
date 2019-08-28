@@ -1,7 +1,7 @@
 import './style.scss';
 import React, { PureComponent, FormEvent } from 'react';
 import { Form, Button, Divider } from 'antd';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { WrappedFormUtils, FormComponentProps } from 'antd/lib/form/Form';
 import { COMMON_FILELDS} from '../data/fields';
 import { ButtonProps } from 'antd/lib/button';
 const FILELDS = COMMON_FILELDS;
@@ -51,7 +51,7 @@ const trimRule = {
   }
 };
 
-class DForm extends PureComponent<IFormProps & { form: WrappedFormUtils }> {
+class DForm extends PureComponent<IFormProps & FormComponentProps> {
   defaultBtns: IBtnProps[];
   cancelBtn: IBtnProps;
   constructor(props: IFormProps) {
@@ -190,4 +190,4 @@ class DForm extends PureComponent<IFormProps & { form: WrappedFormUtils }> {
   }
 }
 
-export default Form.create<IFormProps>({ name: 'DForm' })(DForm);
+export default Form.create<IFormProps>()(DForm);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-react-router';
 import Form, { IFieldItem } from './index';
@@ -7,7 +7,7 @@ const stories = storiesOf('Form', module);
 export const fields: IFieldItem[] =  [
   {
     label: '渠道',
-    type: 'checkboxs',
+    type: 'radios',
     name: 'channelCodeList',
     fieldType: 'array',
     options: ['a', 'b', 'c']
@@ -63,6 +63,30 @@ export const fields: IFieldItem[] =  [
     rows: 4,
   }
 ];
+const field1 = [
+  {
+    label: '名称',
+    name: 'couponList1',
+    fieldType: 'array',
+    rules: [{ required: true }]
+  },
+  {
+    label: '免息券名称',
+    name: 'couponList',
+    type: 'radios',
+    fieldType: 'array',
+    options: ['a', 'b', 'c']
+  },
+  {
+    label: '活动简介',
+    className: 'activity-field',
+    type: 'textarea',
+    placeholder: '介绍活动内容',
+    name: 'activityIntroduction',
+    maxLength: 200,
+    rows: 4,
+  }
+];
 stories.addDecorator(StoryRouter()).add(
   'From',
   () => (
@@ -96,16 +120,33 @@ stories.addDecorator(StoryRouter()).add(
   ),
 );
 
+class Page extends Component {
+  fields: any = { a: fields, b: field1 };
+  state = {
+    type: 'a'
+  };
+  renderField = (e: any) => {
+    this.setState({
+      type: e.target.value
+    });
+  }
+  render() {
+    const { type } = this.state;
+    fields[0].onChange = this.renderField;
+    return (
+      <Form
+        titleDividerLine={true}
+        btns={[{
+          type: 'primary',
+          htmlType: 'submit',
+          text: '登录'
+        }]}
+        fields={this.fields[type]}  />
+    );
+  }
+}
+
 stories.addDecorator(StoryRouter()).add(
   '自定义btns',
-  () => (
-    <Form
-      titleDividerLine={true}
-      btns={[{
-        type: 'primary',
-        htmlType: 'submit',
-        text: '登录'
-      }]}
-      fields={fields}  />
-  ),
+  () => <Page/>
 );

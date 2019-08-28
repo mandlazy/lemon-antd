@@ -1,6 +1,6 @@
 import './style.scss';
 import React, { PureComponent } from 'react';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { WrappedFormUtils, FormComponentProps } from 'antd/lib/form/Form';
 import { ButtonProps } from 'antd/lib/button';
 export interface IFieldItem {
     label?: string;
@@ -31,9 +31,7 @@ interface IBtnProps extends ButtonProps {
     text: string;
     [propName: string]: any;
 }
-declare class DForm extends PureComponent<IFormProps & {
-    form: WrappedFormUtils;
-}> {
+declare class DForm extends PureComponent<IFormProps & FormComponentProps> {
     defaultBtns: IBtnProps[];
     cancelBtn: IBtnProps;
     constructor(props: IFormProps);
