@@ -43,7 +43,7 @@ function Table(props: ITableProps) {
     fixedWidth = true;
   }
   if (fixedWidth) {
-    style={ width: `${tableWidth}px` }
+    style = { width: `${tableWidth}px` };
   }
   return (
     <ATable

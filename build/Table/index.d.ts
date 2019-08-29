@@ -5,6 +5,7 @@ export interface ITableProps {
     components?: object;
     fixed?: boolean;
     data?: any[];
+    fixedWidth?: boolean;
     pagination?: object | false;
     [propName: string]: any;
 }

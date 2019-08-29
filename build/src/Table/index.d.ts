@@ -5,6 +5,7 @@ export interface ITableProps {
     components?: object;
     fixed?: boolean;
     data?: any[];
+    fixedWidth?: boolean;
     pagination?: object | false;
     [propName: string]: any;
 }
@@ -47,6 +48,15 @@ declare namespace Table {
                 };
             };
             "data": {
+                "defaultValue": null;
+                "description": string;
+                "name": string;
+                "required": boolean;
+                "type": {
+                    "name": string;
+                };
+            };
+            "fixedWidth": {
                 "defaultValue": null;
                 "description": string;
                 "name": string;
