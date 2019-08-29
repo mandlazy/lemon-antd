@@ -73,7 +73,15 @@ class DForm extends PureComponent {
             }
             const { initialValues = {}, form, viewing, components } = this.props;
             return (viewing ?
-                _renderFieldViewing({ ...ops, label, className, name, index, components }) :
+                _renderFieldViewing({
+                    ...ops,
+                    label,
+                    className,
+                    name,
+                    index,
+                    components,
+                    value: initialValues[name] || ops.value
+                }) :
                 React.createElement(Form.Item, { label: label, key: name + index, className: className }, form.getFieldDecorator(name, {
                     initialValue: initialValues[name] || initialValue,
                     rules,
