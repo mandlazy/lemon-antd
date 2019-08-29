@@ -120,13 +120,14 @@ class DForm extends PureComponent {
             }];
     }
     render() {
-        const { fields = [], multiple = false, title, components, className } = this.props;
+        const { fields = [], multiple = false, title, components, children, className } = this.props;
         Object.assign(FILELDS, components);
         return (React.createElement(Form, { className: 'form ' + className, onSubmit: this.handleSubmit },
             multiple && fields.length ?
                 fields.map((form) => this.renderForm(form.fields, form.title)) :
                 this.renderForm(fields, title),
-            this.renderBtns()));
+            this.renderBtns(),
+            children));
     }
 }
 export default Form.create()(DForm);

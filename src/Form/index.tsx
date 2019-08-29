@@ -213,6 +213,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
       multiple = false,
       title,
       components,
+      children,
       className} = this.props;
     Object.assign(FILELDS, components);
     return (
@@ -225,6 +226,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
           this.renderForm(fields, title)
         }
         { this.renderBtns() }
+        { children }
       </Form>
     );
   }
