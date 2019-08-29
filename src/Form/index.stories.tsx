@@ -63,7 +63,6 @@ export const fields: IFieldItem[] =  [
   {
     label: '免息券名称',
     name: 'couponList',
-    type: 'image',
     value: 'b',
     fieldType: 'array',
     useDefinedViewingComponent: true,

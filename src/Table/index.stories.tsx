@@ -7,25 +7,21 @@ const stories = storiesOf('Table', module);
 export const columns = [
   {
     title: '筛选',
-    width: 70,
     dataIndex: 'selectBtn',
     type: 'checkbox'
   },
   {
     title: '下限',
-    width: 160,
     dataIndex: 'leftValue'
   },
   {
     title: '上限',
     dataIndex: 'rightValue',
-    width: 160
   },
   {
     title: '左包含',
     dataIndex: 'leftOperator',
     type: 'select',
-    width: 100,
   },
   {
     title: '右包含',
@@ -35,7 +31,6 @@ export const columns = [
   {
     title: '有效期（天）',
     dataIndex: 'termDay',
-    width: 120
   }
 ];
 

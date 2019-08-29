@@ -7,6 +7,7 @@ export interface ITableProps {
   components?: object;
   fixed?: boolean;
   data?: any[];
+  fixedWidth?: boolean;
   pagination?: object | false;
   [propName: string]: any;
 }
@@ -31,16 +32,22 @@ function Table(props: ITableProps) {
     components,
     ...otherConfig } = props;
   const scroll: any = {};
+  let { fixedWidth = false } = props;
   if (pagination) {
     scroll.y = scrollY;
   }
+  let style = {};
   const tableWidth =  width || columns.reduce((w, col: IColProps) => w + (col.width || 180), 0);
   if (hasFixedColumn(columns)) {
-    scroll.x = width;
+    scroll.x = tableWidth;
+    fixedWidth = true;
+  }
+  if (fixedWidth) {
+    style={ width: `${tableWidth}px` }
   }
   return (
     <ATable
-      style={{ width: `${tableWidth}px` }}
+      style={style}
       components={components}
       columns={columns}
       pagination={pagination}
