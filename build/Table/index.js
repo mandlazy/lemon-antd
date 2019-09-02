@@ -7,7 +7,7 @@ const hasFixedColumn = (columns) => {
 function Table(props) {
     const { scrollY = 410, className, pagination = false, data, columns, width, components, ...otherConfig } = props;
     const scroll = {};
-    let { fixedWidth = false } = props;
+    const { fixedWidth = false } = props;
     if (pagination) {
         scroll.y = scrollY;
     }
@@ -15,7 +15,6 @@ function Table(props) {
     const tableWidth = width || columns.reduce((w, col) => w + (col.width || 180), 0);
     if (hasFixedColumn(columns)) {
         scroll.x = tableWidth;
-        fixedWidth = true;
     }
     if (fixedWidth) {
         style = { width: `${tableWidth}px` };
