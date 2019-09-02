@@ -90,10 +90,13 @@ class DForm extends PureComponent {
         this.renderFields = (fields) => {
             const { type = 'vertical', rowGutter = 20 } = this.props;
             if (type === 'vertical') {
-                return fields.map((field, index) => this.renderField(field, index));
+                return fields.map((field, index) => field ? this.renderField(field, index) : null);
             }
             else {
-                return (React.createElement("div", { className: 'form-horizontal-fields-wrapper' }, fields.map(({ colWidth, ...field }, index) => (React.createElement("div", { style: { padding: `0 ${rowGutter}px`, width: colWidth ? `${colWidth}px` : 'fit-content' }, className: 'form-horizontal-field', key: index }, this.renderField(field, index))))));
+                return (React.createElement("div", { className: 'form-horizontal-fields-wrapper' }, fields.map((f, index) => {
+                    const { colWidth, ...field } = f;
+                    return f ? (React.createElement("div", { style: { padding: `0 ${rowGutter}px`, width: colWidth ? `${colWidth}px` : 'fit-content' }, className: 'form-horizontal-field', key: index }, this.renderField(field, index))) : null;
+                })));
             }
         };
         this.renderForm = (fields, title) => {

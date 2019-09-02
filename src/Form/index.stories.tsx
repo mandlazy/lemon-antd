@@ -63,7 +63,7 @@ export const fields: IFieldItem[] =  [
   {
     label: '免息券名称',
     name: 'couponList',
-    value: 'b',
+    initialValue: 'b',
     fieldType: 'array',
     useDefinedViewingComponent: true,
     options: ['a', 'b', 'c']
@@ -84,7 +84,7 @@ const field1 = [
     label: '名称',
     name: 'couponList1',
     fieldType: 'array',
-    value: 'dadadd',
+    initialValue: 'dadadd',
     rules: [{ required: true }]
   },
   {
@@ -92,9 +92,10 @@ const field1 = [
     name: 'couponList',
     type: 'radios',
     fieldType: 'array',
-    value: 'a',
+    initialValue: 'a',
     options: ['a', 'b', 'c']
   },
+  undefined,
   {
     label: '活动简介',
     className: 'activity-field',
@@ -102,7 +103,7 @@ const field1 = [
     placeholder: '介绍活动内容',
     name: 'activityIntroduction1',
     maxLength: 200,
-    value: 'dasddadsaadasd',
+    initialValue: 'dasddadsaadasd',
     rows: 4,
     rules: [{ required: true }]
   }
@@ -170,7 +171,7 @@ class Page extends Component {
     this.fields[type][0].fields[0].onChange = this.renderField;
     return (
       <Form
-        viewing={true}
+        viewing={false}
         titleDividerLine={true}
         multiple={true}
         components={components}
@@ -179,7 +180,7 @@ class Page extends Component {
           htmlType: 'submit',
           text: '登录'
         }]}
-        fields={this.fields[type][0]}  />
+        fields={...this.fields[type]}  />
     );
   }
 }

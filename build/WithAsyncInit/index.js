@@ -20,9 +20,10 @@ function withAsyncInit(WrapComponet, ops = {}) {
                 this.onAsyncInit();
             }
             render() {
-                const { onAsyncInit, ...props } = this.props;
+                const { onAsyncInit, isDefaultFirstOption, ...props } = this.props;
                 const asyncData = this.state[asyncDataKey];
                 const asyncProps = {
+                    value: isDefaultFirstOption ? asyncData[0] : '',
                     ...props,
                     [asyncDataKey]: asyncData
                 };
