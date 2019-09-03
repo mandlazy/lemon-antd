@@ -12,7 +12,7 @@ class EditCell extends PureComponent {
             const resType = type;
             return FILELDS[resType]({
                 name: dataIndex,
-                ['row-index']: rowIndex,
+                ['data-row-index']: rowIndex,
                 onBlur: () => { this.save(dataIndex, rowIndex); },
                 ...props
             });

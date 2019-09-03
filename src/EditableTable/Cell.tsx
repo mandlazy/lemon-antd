@@ -17,7 +17,7 @@ class EditCell extends PureComponent<IColProps> {
     const resType: fieldType = type;
     return FILELDS[resType]({
       name: dataIndex,
-      ['row-index']: rowIndex,
+      ['data-row-index']: rowIndex,
       onBlur: () => { this.save(dataIndex, rowIndex); },
       ...props });
   }
