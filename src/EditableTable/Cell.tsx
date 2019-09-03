@@ -55,7 +55,7 @@ class EditCell extends PureComponent<IColProps> {
         {form.getFieldDecorator(dataIndex, {
           rules,
           initialValue: record[dataIndex]
-        })(this.renderField({ type, ...fieldops, record, rowIndex }))}
+        })(this.renderField({ type, ...fieldops, record, rowIndex, form }))}
       </Form.Item>
     );
   }

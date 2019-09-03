@@ -42,7 +42,7 @@ class EditCell extends PureComponent {
             return render ? render(record, rowIndex) : (React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {
                 rules,
                 initialValue: record[dataIndex]
-            })(this.renderField({ type, ...fieldops, record, rowIndex }))));
+            })(this.renderField({ type, ...fieldops, record, rowIndex, form }))));
         };
         Object.assign(FILELDS, props.components);
     }
