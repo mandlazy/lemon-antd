@@ -13,9 +13,13 @@ class CheckboxGroup extends PureComponent<ICheckboxGroupProps> {
     return (
       <Checkbox.Group {...props}>
         {options.map((ops) => {
-          const { text, value } = handlerOptions(ops);
+          const { text, value, ...otherProps } = handlerOptions(ops);
           return (
-            <Checkbox className='checkbox' key={value} value={value}>
+            <Checkbox
+              className='checkbox'
+              key={value}
+              value={value}
+              {...otherProps}>
               {text}
             </Checkbox>
           );
