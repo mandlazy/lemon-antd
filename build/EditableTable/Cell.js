@@ -38,8 +38,8 @@ class EditCell extends PureComponent {
         this.renderCell = (value) => {
             const { form, rowIndex } = value;
             this.form = form;
-            const { dataIndex, record, type, rules, fieldops } = this.props;
-            return (React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {
+            const { dataIndex, record, type, rules, fieldops, render } = this.props;
+            return render ? render(record, rowIndex) : (React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {
                 rules,
                 initialValue: record[dataIndex]
             })(this.renderField({ type, ...fieldops, record, rowIndex }))));

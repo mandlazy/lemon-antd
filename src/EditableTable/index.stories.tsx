@@ -38,7 +38,8 @@ export const columns: any[] = [
     dataIndex: 'leftOperator',
     type: 'select',
     options: ['1', '2', '3'],
-    width: 100
+    width: 100,
+    render: (record: any) => <span>{record.leftOperator}</span>
   },
   {
     title: '右包含',
@@ -77,7 +78,16 @@ const initialData: ICol = {
   checked: false
 };
 function EditTableComp() {
-  const [ data, setData ] = useState<ICol[]>([]);
+  const [ data, setData ] = useState<ICol[]>([
+    {
+      leftValue: '',
+      rightValue: '',
+      leftOperator: '232',
+      rightOperator: '',
+      termDay: '',
+      checked: false
+    }
+  ]);
   const add = () => {
     setData([ ...data, initialData ]);
   };

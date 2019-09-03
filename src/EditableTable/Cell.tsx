@@ -47,9 +47,10 @@ class EditCell extends PureComponent<IColProps> {
       record,
       type,
       rules,
-      fieldops
+      fieldops,
+      render
     } = this.props;
-    return (
+    return render ? render(record, rowIndex) : (
        <Form.Item style={{ margin: 0 }}>
         {form.getFieldDecorator(dataIndex, {
           rules,
