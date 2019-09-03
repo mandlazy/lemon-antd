@@ -67,6 +67,7 @@ class EditCell extends PureComponent<IColProps> {
       handleSave,
       children,
       components,
+      render,
       ...restProps
     } = this.props;
     return (

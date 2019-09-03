@@ -99,9 +99,10 @@ class DForm extends PureComponent {
                 })));
             }
         };
-        this.renderForm = (fields, title) => {
+        this.renderForm = (props) => {
+            const { title, fields, className = '' } = props;
             const { titleDividerLine = false, footerDividerLine = false, } = this.props;
-            return (React.createElement("div", { className: 'form-wrapper', key: title },
+            return (React.createElement("div", { className: 'form-wrapper ' + className, key: title },
                 title && React.createElement("h3", { className: 'form-title' }, title),
                 titleDividerLine && React.createElement(Divider, { className: 'form-divier' }),
                 React.createElement("div", { className: 'form-fields-wrapper' }, this.renderFields(fields)),
@@ -135,8 +136,8 @@ class DForm extends PureComponent {
         Object.assign(FILELDS, components);
         return (React.createElement(Form, { className: 'form ' + className, onSubmit: this.handleSubmit },
             multiple && fields.length ?
-                fields.map((form) => this.renderForm(form.fields, form.title)) :
-                this.renderForm(fields, title),
+                fields.map((form) => this.renderForm(form)) :
+                this.renderForm({ title, fields }),
             this.renderBtns(),
             children));
     }

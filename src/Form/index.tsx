@@ -185,10 +185,11 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
       );
     }
   }
-  renderForm = (fields: any[], title?: string) => {
+  renderForm = (props: any) => {
+    const { title, fields, className = '' } = props;
     const { titleDividerLine = false, footerDividerLine = false, } = this.props;
     return (
-      <div className='form-wrapper' key={title}>
+      <div className={ 'form-wrapper ' + className } key={title}>
         { title && <h3 className='form-title'>{title}</h3> }
         { titleDividerLine && <Divider className='form-divier' /> }
         <div className='form-fields-wrapper'>
@@ -232,8 +233,8 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
         onSubmit={this.handleSubmit}>
         {
           multiple && fields.length ?
-          fields.map((form: any) => this.renderForm(form.fields, form.title)) :
-          this.renderForm(fields, title)
+          fields.map((form: any) => this.renderForm(form)) :
+          this.renderForm({ title, fields  })
         }
         { this.renderBtns() }
         { children }

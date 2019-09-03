@@ -47,7 +47,7 @@ class EditCell extends PureComponent {
         Object.assign(FILELDS, props.components);
     }
     render() {
-        const { dataIndex, record, index, handleSave, children, components, ...restProps } = this.props;
+        const { dataIndex, record, index, handleSave, children, components, render, ...restProps } = this.props;
         return (React.createElement("td", Object.assign({}, restProps), React.createElement(EditContext.Consumer, null, this.renderCell)));
     }
 }

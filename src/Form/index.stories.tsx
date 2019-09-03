@@ -155,8 +155,8 @@ stories.addDecorator(StoryRouter()).add(
 
 class Page extends Component {
   fields: any = { a: [
-    {title: '1', fields},
-    {title: '2', fields: field1} ],
+    {title: '1', fields, className: 'hu1'},
+    {title: '2', fields: field1, className: 'hu2'} ],
     b: [ {title: '3', fields: field1 }] };
   state = {
     type: 'a'
