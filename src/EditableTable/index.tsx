@@ -45,7 +45,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
     }
   }
   render() {
-    const { data, columns, components, className = '' } = this.props;
+    const { data, columns, components, className = '' , fixedWidth} = this.props;
     const _components = {
       body: {
         row: EditRow,
@@ -72,6 +72,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
        <Table
           className={'editable '  + className}
           components={_components}
+          fixedWidth={fixedWidth}
           rowClassName={() => 'editable-row'}
           bordered={true}
           pagination={false}

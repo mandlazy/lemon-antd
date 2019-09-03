@@ -40,7 +40,7 @@ class EditableTable extends PureComponent {
         this._data = props.data;
     }
     render() {
-        const { data, columns, components, className = '' } = this.props;
+        const { data, columns, components, className = '', fixedWidth } = this.props;
         const _components = {
             body: {
                 row: EditRow,
@@ -63,7 +63,7 @@ class EditableTable extends PureComponent {
                 })
             };
         });
-        return (React.createElement(Table, { className: 'editable ' + className, components: _components, rowClassName: () => 'editable-row', bordered: true, pagination: false, data: data, columns: _columns }));
+        return (React.createElement(Table, { className: 'editable ' + className, components: _components, fixedWidth: fixedWidth, rowClassName: () => 'editable-row', bordered: true, pagination: false, data: data, columns: _columns }));
     }
 }
 export default EditableTable;
