@@ -3,10 +3,10 @@ import { Checkbox } from 'antd';
 import { handlerOptions } from '../utils/Option';
 class CheckboxGroup extends PureComponent {
     render() {
-        const { options = [], ...props } = this.props;
+        const { options = [], textKey = 'text', valueKey = 'value', ...props } = this.props;
         return (React.createElement(Checkbox.Group, Object.assign({}, props), options.map((ops) => {
-            const { text, value, ...otherProps } = handlerOptions(ops);
-            return (React.createElement(Checkbox, Object.assign({ className: 'checkbox', key: value, value: value }, otherProps), text));
+            const { option = {}, optionProps } = handlerOptions(ops, textKey, valueKey);
+            return (React.createElement(Checkbox, Object.assign({ className: 'checkbox', key: option[valueKey], value: option[valueKey] }, optionProps), option[textKey]));
         })));
     }
 }

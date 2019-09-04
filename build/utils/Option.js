@@ -1,10 +1,17 @@
-export const handlerOptions = (option) => {
+export const handlerOptions = (option, textKey, valueKey) => {
     if (!option)
         throw new Error('option can not be undifend or null');
+    const optionProps = {};
     if (typeof option === 'object') {
-        const { text = '', value = text } = option;
-        return { text, value };
+        optionProps.disabled = option.disabled || false;
+        return {
+            [textKey]: option[textKey] || '',
+            [valueKey]: option[valueKey] || option[textKey]
+        };
     }
-    return { text: option, value: option };
+    return {
+        option: { [textKey]: option, [valueKey]: option },
+        optionProps
+    };
 };
 //# sourceMappingURL=Option.js.map

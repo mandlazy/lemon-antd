@@ -11,14 +11,18 @@ class Select extends PureComponent<ISelectProps> {
     width: 200
   };
   render() {
-    const { options, width, ...props } = this.props;
+    const { options, width, textKey = 'text', valueKey = 'value', ...props } = this.props;
     return (
        <AndSelect style={{ width }} className='select' {...props}>
-        {options.map((ops, index) => {
-          const { text, value } = handlerOptions(ops);
+        { options.map((ops: any) => {
+          const { option = {}, optionProps }  = handlerOptions(ops, textKey, valueKey);
           return (
-            <AndSelect.Option className='select-option' key={index} value={value}>
-              {text}
+            <AndSelect.Option
+              className='select-option'
+              key={option[valueKey]}
+              value={option[valueKey]}
+              {...optionProps}>
+              {option[textKey]}
             </AndSelect.Option>
           );
         })}

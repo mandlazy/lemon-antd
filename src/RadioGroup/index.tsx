@@ -9,14 +9,18 @@ export interface IRadioGroupProps {
 
 class RadioGroup extends PureComponent<IRadioGroupProps> {
   render() {
-    const { options, ...props } = this.props;
+    const { options, textKey = 'text', valueKey = 'value', ...props } = this.props;
     return (
       <Radio.Group {...props}>
-        {options.map((ops) => {
-          const { text, value } = handlerOptions(ops);
+        { options.map((ops: any) => {
+          const { option = {}, optionProps } = handlerOptions(ops, textKey, valueKey);
           return (
-            <Radio key={value} className='radio' value={value}>
-              {text}
+            <Radio
+            key={option[valueKey]}
+            className='radio'
+            value={option[valueKey]}
+            {...optionProps}>
+              {option[textKey]}
             </Radio>
           );
         })}

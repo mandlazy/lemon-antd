@@ -9,18 +9,18 @@ export interface ICheckboxGroupProps {
 
 class CheckboxGroup extends PureComponent<ICheckboxGroupProps> {
   render() {
-    const { options = [], ...props } = this.props;
+    const { options = [], textKey = 'text', valueKey = 'value', ...props } = this.props;
     return (
       <Checkbox.Group {...props}>
-        {options.map((ops) => {
-          const { text, value, ...otherProps } = handlerOptions(ops);
+        { options.map((ops: any) => {
+          const { option = {}, optionProps } = handlerOptions(ops, textKey, valueKey);
           return (
             <Checkbox
               className='checkbox'
-              key={value}
-              value={value}
-              {...otherProps}>
-              {text}
+              key={option[valueKey]}
+              value={option[valueKey]}
+              {...optionProps}>
+              {option[textKey]}
             </Checkbox>
           );
         })}
