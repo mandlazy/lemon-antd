@@ -37,7 +37,7 @@ declare class DForm extends PureComponent<IFormProps & FormComponentProps> {
     constructor(props: IFormProps);
     handleCancel: () => void;
     handleSubmit: (e: React.FormEvent<Element>) => void;
-    renderField: ({ label, rules, name, initialValue, className, fieldType, ...ops }: IFieldItem, index: number) => JSX.Element;
+    renderField: ({ label, rules, name, initialValue, className, fieldType, validateOps, ...ops }: IFieldItem, index: number) => JSX.Element;
     renderFields: (fields: any[]) => JSX.Element | (JSX.Element | null)[];
     renderForm: (props: any) => JSX.Element;
     renderBtns: () => JSX.Element;

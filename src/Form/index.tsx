@@ -135,6 +135,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     initialValue,
     className,
     fieldType = 'string',
+    validateOps = {},
     ...ops
   }: IFieldItem, index: number ) => {
     rules = [...(rules || [])];
@@ -156,6 +157,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
         { form.getFieldDecorator(name, {
           initialValue: initialValues[name] || initialValue,
           rules,
+          ...validateOps
         })(_renderField(ops))}
       </Form.Item>
     );
