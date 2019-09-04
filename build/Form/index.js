@@ -66,7 +66,7 @@ class DForm extends PureComponent {
                 }
             });
         };
-        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', validateOps = {}, ...ops }, index) => {
+        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', useDefinedViewingComponent, validateOps = {}, ...ops }, index) => {
             rules = [...(rules || [])];
             if (fieldType === 'string') {
                 rules.unshift(trimRule);
@@ -80,6 +80,7 @@ class DForm extends PureComponent {
                     name,
                     index,
                     components,
+                    useDefinedViewingComponent,
                     value: initialValues[name] || ops.value
                 }) :
                 React.createElement(Form.Item, { label: label, key: name + index, className: className }, form.getFieldDecorator(name, {
