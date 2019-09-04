@@ -135,6 +135,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     initialValue,
     className,
     fieldType = 'string',
+    useDefinedViewingComponent,
     validateOps = {},
     ...ops
   }: IFieldItem, index: number ) => {
@@ -152,6 +153,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
         name,
         index,
         components,
+        useDefinedViewingComponent,
         value: initialValues[name] || ops.value }) :
       <Form.Item label={label} key={name + index} className={className}>
         { form.getFieldDecorator(name, {

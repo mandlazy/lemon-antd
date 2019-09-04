@@ -30,8 +30,9 @@ stories.addDecorator(StoryRouter()).add(
   'with async options',
   () => (
     <AsyncSelect
+      isDefaultFirstOption={true}
+      placeholder='ddd'
       onAsyncInit={onAsyncInit}
-      options={options}
     />
   ),
 );
