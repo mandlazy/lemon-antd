@@ -24,7 +24,7 @@ export const fields: IFieldItem[] =  [
     type: 'radios',
     name: 'channelCodeList',
     fieldType: 'array',
-    options: ['a', 'b', 'c']
+    options: [{text: 'a', value: '0'}]
   },
   {
     label: '活动名称',

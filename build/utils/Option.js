@@ -4,14 +4,14 @@ export const handlerOptions = (option, textKey, valueKey) => {
     const optionProps = {};
     if (typeof option === 'object') {
         optionProps.disabled = option.disabled || false;
-        return {
-            [textKey]: option[textKey] || '',
-            [valueKey]: option[valueKey] || option[textKey]
+        option = {
+            [textKey]: option[textKey],
+            [valueKey]: option[valueKey]
         };
     }
-    return {
-        option: { [textKey]: option, [valueKey]: option },
-        optionProps
-    };
+    else {
+        option = { [textKey]: option, [valueKey]: option };
+    }
+    return { option, optionProps };
 };
 //# sourceMappingURL=Option.js.map

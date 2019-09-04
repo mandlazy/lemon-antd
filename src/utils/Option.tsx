@@ -3,15 +3,14 @@ export const handlerOptions = (option: any, textKey: string, valueKey: string) =
   const optionProps: any = {};
   if (typeof option === 'object') {
     optionProps.disabled = option.disabled || false;
-    return {
-      [textKey]: option[textKey] || '',
-      [valueKey]: option[valueKey] || option[textKey]
+    option = {
+      [textKey]: option[textKey],
+      [valueKey]: option[valueKey]
     };
+  } else {
+    option = { [textKey]: option, [valueKey]: option };
   }
-  return {
-    option: { [textKey]: option, [valueKey]: option },
-    optionProps
-  };
+  return { option, optionProps };
 };
 
 export interface IOption {
