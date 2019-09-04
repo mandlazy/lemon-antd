@@ -31,7 +31,7 @@ class EditableTable extends PureComponent {
             this.handleValues(rowIndex, values, hasError);
             this.handleErrors(rowIndex, errors, hasError);
             if (onChange) {
-                onChange(this._data);
+                onChange(this._errors, this._data);
             }
             if (onError) {
                 onError(this._errors);

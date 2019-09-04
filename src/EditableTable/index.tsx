@@ -6,7 +6,7 @@ import { ITableProps, IColProps } from '../Table';
 import Table from '../Table';
 
 export interface IEditTableProps extends ITableProps {
-  onChange?: (data: any) => void;
+  onChange?: (data: any, error: any) => void;
   onError?: (error: any) => void;
 }
 
@@ -38,7 +38,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
     this.handleValues(rowIndex, values, hasError);
     this.handleErrors(rowIndex, errors, hasError);
     if (onChange) {
-      onChange(this._data);
+      onChange(this._errors, this._data);
     }
     if (onError) {
       onError(this._errors);

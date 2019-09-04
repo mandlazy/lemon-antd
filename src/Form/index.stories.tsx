@@ -166,11 +166,15 @@ class Page extends Component {
       type: e.target.value
     });
   }
+  submit = (values: any) => {
+    // console.log(values)
+  }
   render() {
     const { type } = this.state;
     this.fields[type][0].fields[0].onChange = this.renderField;
     return (
       <Form
+        onSubmit={this.submit}
         viewing={false}
         titleDividerLine={true}
         multiple={true}

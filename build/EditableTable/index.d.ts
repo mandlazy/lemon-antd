@@ -2,7 +2,7 @@ import './style.scss';
 import { PureComponent } from 'react';
 import { ITableProps } from '../Table';
 export interface IEditTableProps extends ITableProps {
-    onChange?: (data: any) => void;
+    onChange?: (data: any, error: any) => void;
     onError?: (error: any) => void;
 }
 declare class EditableTable extends PureComponent<IEditTableProps> {
