@@ -4,7 +4,6 @@ import { IColProps } from '../Table';
 import { Form } from 'antd';
 import { COMMON_FILELDS} from '../data/fields';
 const FILELDS = COMMON_FILELDS;
-
 class EditCell extends PureComponent<IColProps> {
   form: any = undefined;
   constructor(props: IColProps) {
@@ -39,8 +38,37 @@ class EditCell extends PureComponent<IColProps> {
       });
     });
   }
-  renderCell = (value: any) => {
-    const { form, rowIndex } = value;
+  _renderFieldViewing = (ops: any) => {
+    const {
+      options,
+      components } = ops;
+    let {
+      value = '',
+      useDefinedViewingComponent } = ops;
+    useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
+    if (value && useDefinedViewingComponent) {
+      value = this.renderField({...ops, viewing: true, value});
+    } else {
+      if (options && value) {
+        const text = options.find((option: any) => {
+          if (typeof option === 'object') {
+            return option.value === value;
+          } else {
+            return option === value;
+          }
+        });
+        value = typeof text === 'object' ? text.text : text;
+      }
+      if (value instanceof Array) {
+        value = value.join(',');
+      }
+    }
+    return (
+       <div className='form-label-wrapper'>{ value }</div>
+    );
+}
+  renderCell = (values: any) => {
+    const { form, rowIndex } = values;
     this.form = form;
     const {
       dataIndex,
@@ -48,13 +76,23 @@ class EditCell extends PureComponent<IColProps> {
       type,
       rules,
       fieldops,
-      render
+      render,
     } = this.props;
+    const {
+      validateOps,
+      viewing,
+      useDefinedViewingComponent } = fieldops;
     return render ? render(record, rowIndex) : (
+      viewing ?
+      this._renderFieldViewing({
+        dataIndex,
+        useDefinedViewingComponent,
+        value: record[dataIndex]}) :
        <Form.Item style={{ margin: 0 }}>
         {form.getFieldDecorator(dataIndex, {
           rules,
-          initialValue: record[dataIndex]
+          initialValue: record[dataIndex],
+          ...validateOps
         })(this.renderField({ type, ...fieldops, record, rowIndex, form }))}
       </Form.Item>
     );

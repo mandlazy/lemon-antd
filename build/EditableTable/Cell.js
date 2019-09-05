@@ -35,14 +35,47 @@ class EditCell extends PureComponent {
                 });
             });
         };
-        this.renderCell = (value) => {
-            const { form, rowIndex } = value;
+        this._renderFieldViewing = (ops) => {
+            const { options, components } = ops;
+            let { value = '', useDefinedViewingComponent } = ops;
+            useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
+            if (value && useDefinedViewingComponent) {
+                value = this.renderField({ ...ops, viewing: true, value });
+            }
+            else {
+                if (options && value) {
+                    const text = options.find((option) => {
+                        if (typeof option === 'object') {
+                            return option.value === value;
+                        }
+                        else {
+                            return option === value;
+                        }
+                    });
+                    value = typeof text === 'object' ? text.text : text;
+                }
+                if (value instanceof Array) {
+                    value = value.join(',');
+                }
+            }
+            return (React.createElement("div", { className: 'form-label-wrapper' }, value));
+        };
+        this.renderCell = (values) => {
+            const { form, rowIndex } = values;
             this.form = form;
-            const { dataIndex, record, type, rules, fieldops, render } = this.props;
-            return render ? render(record, rowIndex) : (React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {
-                rules,
-                initialValue: record[dataIndex]
-            })(this.renderField({ type, ...fieldops, record, rowIndex, form }))));
+            const { dataIndex, record, type, rules, fieldops, render, } = this.props;
+            const { validateOps, viewing, useDefinedViewingComponent } = fieldops;
+            return render ? render(record, rowIndex) : (viewing ?
+                this._renderFieldViewing({
+                    dataIndex,
+                    useDefinedViewingComponent,
+                    value: record[dataIndex]
+                }) :
+                React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {
+                    rules,
+                    initialValue: record[dataIndex],
+                    ...validateOps
+                })(this.renderField({ type, ...fieldops, record, rowIndex, form }))));
         };
         Object.assign(FILELDS, props.components);
     }

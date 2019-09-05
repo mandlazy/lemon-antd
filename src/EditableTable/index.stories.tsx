@@ -61,7 +61,7 @@ export const columns: any[] = [
 ];
 
 interface ICol {
-  leftValue?: string;
+  leftValue?: string | any[];
   rightValue?: string;
   leftOperator?: string;
   rightOperator?: string;
@@ -80,7 +80,7 @@ const initialData: ICol = {
 function EditTableComp() {
   const [ data, setData ] = useState<ICol[]>([
     {
-      leftValue: '',
+      leftValue: ['0' , '1', '2'],
       rightValue: '',
       leftOperator: '232',
       rightOperator: '',
@@ -114,6 +114,7 @@ function EditTableComp() {
       <Button onClick={add}>增加</Button>
       <Button onClick={save}>保存</Button>
       <EditTable
+        viewing={true}
         onError={onError}
         onChange={onChange}
         components={{ deleteBtn: DeleteBtn }}

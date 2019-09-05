@@ -57,18 +57,22 @@ const _renderFieldViewing = (ops: any) => {
       value = '',
       useDefinedViewingComponent } = ops;
     useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
-    if (options && value) {
-      const text = options.find((option: any) => {
-        if (typeof option === 'object') {
-          return option.value === value;
-        } else {
-          return option === value;
-        }
-      });
-      value = typeof text === 'object' ? text.text : text;
-    }
     if (value && useDefinedViewingComponent) {
       value = _renderField({...ops, viewing: true, value});
+    } else {
+      if (value instanceof Array) {
+        value = value.join(',');
+      }
+      if (options && value) {
+        const text = options.find((option: any) => {
+          if (typeof option === 'object') {
+            return option.value === value;
+          } else {
+            return option === value;
+          }
+        });
+        value = typeof text === 'object' ? text.text : text;
+      }
     }
     return (
       <Label
