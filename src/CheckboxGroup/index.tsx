@@ -12,12 +12,12 @@ class CheckboxGroup extends PureComponent<ICheckboxGroupProps> {
     const { options = [], textKey = 'text', valueKey = 'value', ...props } = this.props;
     return (
       <Checkbox.Group {...props}>
-        { options.map((ops: any) => {
+        { options.map((ops: any, index) => {
           const { option = {}, optionProps } = handlerOptions(ops, textKey, valueKey);
           return (
             <Checkbox
               className='checkbox'
-              key={option[valueKey]}
+              key={index}
               value={option[valueKey]}
               {...optionProps}>
               {option[textKey]}

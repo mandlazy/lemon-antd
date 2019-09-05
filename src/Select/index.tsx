@@ -14,12 +14,12 @@ class Select extends PureComponent<ISelectProps> {
     const { options, width, textKey = 'text', valueKey = 'value', ...props } = this.props;
     return (
        <AndSelect style={{ width }} className='select' {...props}>
-        { options.map((ops: any) => {
+        { options.map((ops: any, index) => {
           const { option = {}, optionProps }  = handlerOptions(ops, textKey, valueKey);
           return (
             <AndSelect.Option
               className='select-option'
-              key={option[valueKey]}
+              key={index}
               value={option[valueKey]}
               {...optionProps}>
               {option[textKey]}

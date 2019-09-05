@@ -12,11 +12,11 @@ class RadioGroup extends PureComponent<IRadioGroupProps> {
     const { options, textKey = 'text', valueKey = 'value', ...props } = this.props;
     return (
       <Radio.Group {...props}>
-        { options.map((ops: any) => {
+        { options.map((ops: any, index) => {
           const { option = {}, optionProps } = handlerOptions(ops, textKey, valueKey);
           return (
             <Radio
-            key={option[valueKey]}
+            key={index}
             className='radio'
             value={option[valueKey]}
             {...optionProps}>
