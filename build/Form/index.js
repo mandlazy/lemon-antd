@@ -10,11 +10,14 @@ const _renderField = (ops) => {
     return FILELDS[resType]({ ...props });
 };
 const _renderFieldViewing = (ops) => {
-    const { options, label, className = '', name, index, components } = ops;
+    const { options, label, className = '', name, index, viewingValueRender, components } = ops;
     let { value = '', useDefinedViewingComponent } = ops;
     useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
     if (value && useDefinedViewingComponent) {
         value = _renderField({ ...ops, viewing: true, value });
+    }
+    else if (viewingValueRender) {
+        value = viewingValueRender(value);
     }
     else {
         if (value instanceof Array) {
@@ -71,7 +74,7 @@ class DForm extends PureComponent {
                 }
             });
         };
-        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', useDefinedViewingComponent, validateOps = {}, ...ops }, index) => {
+        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', viewingValueRender, useDefinedViewingComponent, validateOps = {}, ...ops }, index) => {
             rules = [...(rules || [])];
             if (fieldType === 'string') {
                 rules.unshift(trimRule);
@@ -85,6 +88,7 @@ class DForm extends PureComponent {
                     name,
                     index,
                     components,
+                    viewingValueRender,
                     useDefinedViewingComponent,
                     value: initialValues[name] || ops.value
                 }) :

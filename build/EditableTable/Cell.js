@@ -36,11 +36,14 @@ class EditCell extends PureComponent {
             });
         };
         this._renderFieldViewing = (ops) => {
-            const { options, components } = ops;
-            let { value = '', useDefinedViewingComponent } = ops;
+            const { options, components, viewingValueRender } = ops;
+            let { value = '', useDefinedViewingComponent, } = ops;
             useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
             if (value && useDefinedViewingComponent) {
                 value = this.renderField({ ...ops, viewing: true, value });
+            }
+            else if (viewingValueRender) {
+                value = viewingValueRender(value);
             }
             else {
                 if (options && value) {
@@ -64,11 +67,12 @@ class EditCell extends PureComponent {
             const { form, rowIndex } = values;
             this.form = form;
             const { dataIndex, record, type, rules, fieldops, render, } = this.props;
-            const { validateOps, viewing, useDefinedViewingComponent } = fieldops;
+            const { validateOps, viewing, useDefinedViewingComponent, viewingValueRender } = fieldops;
             return render ? render(record, rowIndex) : (viewing ?
                 this._renderFieldViewing({
                     dataIndex,
                     useDefinedViewingComponent,
+                    viewingValueRender,
                     value: record[dataIndex]
                 }) :
                 React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {

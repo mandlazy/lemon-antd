@@ -1,12 +1,15 @@
 import './style.scss';
 import React, { PureComponent } from 'react';
-import { WrappedFormUtils, FormComponentProps } from 'antd/lib/form/Form';
+import { WrappedFormUtils, FormComponentProps, GetFieldDecoratorOptions } from 'antd/lib/form/Form';
 import { ButtonProps } from 'antd/lib/button';
 export interface IFieldItem {
     label?: string;
     rules?: any[];
     name: string;
     initialValue?: any;
+    viewingValueRender?: (value: string) => {};
+    validateOps?: GetFieldDecoratorOptions;
+    useDefinedViewingComponent?: boolean;
     fieldType?: 'string' | 'object' | 'array' | 'file';
     [propName: string]: any;
 }
@@ -37,7 +40,7 @@ declare class DForm extends PureComponent<IFormProps & FormComponentProps> {
     constructor(props: IFormProps);
     handleCancel: () => void;
     handleSubmit: (e: React.FormEvent<Element>) => void;
-    renderField: ({ label, rules, name, initialValue, className, fieldType, useDefinedViewingComponent, validateOps, ...ops }: IFieldItem, index: number) => JSX.Element;
+    renderField: ({ label, rules, name, initialValue, className, fieldType, viewingValueRender, useDefinedViewingComponent, validateOps, ...ops }: IFieldItem, index: number) => JSX.Element;
     renderFields: (fields: any[]) => JSX.Element | (JSX.Element | null)[];
     renderForm: (props: any) => JSX.Element;
     renderBtns: () => JSX.Element;

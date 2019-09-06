@@ -1,7 +1,7 @@
 import './style.scss';
 import React, { PureComponent, FormEvent } from 'react';
 import { Form, Button, Divider } from 'antd';
-import { WrappedFormUtils, FormComponentProps } from 'antd/lib/form/Form';
+import { WrappedFormUtils, FormComponentProps, GetFieldDecoratorOptions } from 'antd/lib/form/Form';
 import { COMMON_FILELDS} from '../data/fields';
 import { ButtonProps } from 'antd/lib/button';
 import Label from '../Label';
@@ -11,6 +11,9 @@ export interface IFieldItem {
   rules?: any[];
   name: string;
   initialValue?: any;
+  viewingValueRender?: (value: string) => {};
+  validateOps?: GetFieldDecoratorOptions;
+  useDefinedViewingComponent?: boolean;
   fieldType?: 'string' | 'object' | 'array' | 'file';
   [ propName: string ]: any;
 }
@@ -52,13 +55,16 @@ const _renderFieldViewing = (ops: any) => {
       className = '',
       name,
       index,
+      viewingValueRender,
       components } = ops;
     let {
       value = '',
       useDefinedViewingComponent } = ops;
     useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
     if (value && useDefinedViewingComponent) {
-      value = _renderField({...ops, viewing: true, value});
+      value =  _renderField({...ops, viewing: true, value});
+    } else if (viewingValueRender) {
+      value = viewingValueRender(value);
     } else {
       if (value instanceof Array) {
         value = value.join(',');
@@ -139,6 +145,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     initialValue,
     className,
     fieldType = 'string',
+    viewingValueRender,
     useDefinedViewingComponent,
     validateOps = {},
     ...ops
@@ -157,6 +164,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
         name,
         index,
         components,
+        viewingValueRender,
         useDefinedViewingComponent,
         value: initialValues[name] || ops.value }) :
       <Form.Item label={label} key={name + index} className={className}>

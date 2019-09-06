@@ -59,7 +59,7 @@ class EditableTable extends PureComponent {
                     type: col.type,
                     rules: col.rules,
                     render: col.render,
-                    fieldops: { ...col, viewing }
+                    fieldops: { viewing, ...col }
                 })
             };
         });

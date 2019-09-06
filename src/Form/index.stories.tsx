@@ -103,7 +103,8 @@ const field1 = [
     placeholder: '介绍活动内容',
     name: 'activityIntroduction1',
     maxLength: 200,
-    initialValue: 'dasddadsaadasd',
+    viewingValueRender: (value: any) =>  value + '222',
+    value: 'dasddadsaadasd',
     rows: 4,
     rules: [{ required: true }]
   }
@@ -175,7 +176,7 @@ class Page extends Component {
     return (
       <Form
         onSubmit={this.submit}
-        viewing={false}
+        viewing={true}
         titleDividerLine={true}
         multiple={true}
         components={components}

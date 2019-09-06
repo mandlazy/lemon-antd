@@ -41,13 +41,17 @@ class EditCell extends PureComponent<IColProps> {
   _renderFieldViewing = (ops: any) => {
     const {
       options,
-      components } = ops;
+      components,
+      viewingValueRender } = ops;
     let {
       value = '',
-      useDefinedViewingComponent } = ops;
+      useDefinedViewingComponent,
+       } = ops;
     useDefinedViewingComponent = useDefinedViewingComponent && components[ops.type] ? true : false;
     if (value && useDefinedViewingComponent) {
       value = this.renderField({...ops, viewing: true, value});
+    } else if (viewingValueRender) {
+      value = viewingValueRender(value);
     } else {
       if (options && value) {
         const text = options.find((option: any) => {
@@ -81,12 +85,14 @@ class EditCell extends PureComponent<IColProps> {
     const {
       validateOps,
       viewing,
-      useDefinedViewingComponent } = fieldops;
+      useDefinedViewingComponent,
+      viewingValueRender } = fieldops;
     return render ? render(record, rowIndex) : (
       viewing ?
       this._renderFieldViewing({
         dataIndex,
         useDefinedViewingComponent,
+        viewingValueRender,
         value: record[dataIndex]}) :
        <Form.Item style={{ margin: 0 }}>
         {form.getFieldDecorator(dataIndex, {
