@@ -42,7 +42,7 @@ interface IBtnProps extends ButtonProps {
 }
 
 const _renderField = (ops: any) => {
-  const { type = 'input', useDedefinedViewComponent, ...props } = ops;
+  const { type = 'input', useDedefinedViewComponent, viewing, ...props } = ops;
   type fieldType = keyof typeof FILELDS;
   const resType: fieldType = type;
   return FILELDS[resType]({ ...props });
@@ -154,9 +154,10 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     if (fieldType === 'string') {
       rules.unshift(trimRule);
     }
-    const { initialValues = {}, form, viewing, components } = this.props;
+    const { initialValues = {}, form, components, ...otherProps} = this.props;
+    const tempOps: any = { ...otherProps,  ...ops};
     return (
-      viewing ?
+      tempOps.viewing ?
       _renderFieldViewing({
         ...ops,
         label,

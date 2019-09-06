@@ -5,7 +5,7 @@ import { COMMON_FILELDS } from '../data/fields';
 import Label from '../Label';
 const FILELDS = COMMON_FILELDS;
 const _renderField = (ops) => {
-    const { type = 'input', useDedefinedViewComponent, ...props } = ops;
+    const { type = 'input', useDedefinedViewComponent, viewing, ...props } = ops;
     const resType = type;
     return FILELDS[resType]({ ...props });
 };
@@ -79,8 +79,9 @@ class DForm extends PureComponent {
             if (fieldType === 'string') {
                 rules.unshift(trimRule);
             }
-            const { initialValues = {}, form, viewing, components } = this.props;
-            return (viewing ?
+            const { initialValues = {}, form, components, ...otherProps } = this.props;
+            const tempOps = { ...otherProps, ...ops };
+            return (tempOps.viewing ?
                 _renderFieldViewing({
                     ...ops,
                     label,

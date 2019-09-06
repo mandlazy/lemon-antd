@@ -103,8 +103,9 @@ const field1 = [
     placeholder: '介绍活动内容',
     name: 'activityIntroduction1',
     maxLength: 200,
+    viewing: false,
     viewingValueRender: (value: any) =>  value + '222',
-    value: 'dasddadsaadasd',
+    initialValue: 'dasddadsaadasd',
     rows: 4,
     rules: [{ required: true }]
   }

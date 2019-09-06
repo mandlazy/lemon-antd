@@ -10,7 +10,7 @@ interface ILabelProps {
 function Label({ title, className = '', children }: ILabelProps) {
   return (
     <label className={'label ' + className}>
-      <p className='label-title'>{title}:</p>
+      {title && <p className='label-title'>{title}:</p> }
       {children}
     </label>
   );
