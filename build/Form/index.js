@@ -5,7 +5,7 @@ import { COMMON_FILELDS } from '../data/fields';
 import Label from '../Label';
 const FILELDS = COMMON_FILELDS;
 const _renderField = (ops) => {
-    const { type = 'input', useDedefinedViewComponent, viewing, ...props } = ops;
+    const { type = 'input', useDedefinedViewComponent, ...props } = ops;
     const resType = type;
     return FILELDS[resType]({ ...props });
 };
@@ -81,6 +81,7 @@ class DForm extends PureComponent {
             }
             const { initialValues = {}, form, components, ...otherProps } = this.props;
             const tempOps = { ...otherProps, ...ops };
+            const { viewing, ...usingInEleOps } = ops;
             return (tempOps.viewing ?
                 _renderFieldViewing({
                     ...ops,
@@ -97,7 +98,7 @@ class DForm extends PureComponent {
                     initialValue: initialValues[name] || initialValue,
                     rules,
                     ...validateOps
-                })(_renderField(ops))));
+                })(_renderField(usingInEleOps))));
         };
         this.renderFields = (fields) => {
             const { type = 'vertical', rowGutter = 20 } = this.props;

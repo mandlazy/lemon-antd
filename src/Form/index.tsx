@@ -42,7 +42,7 @@ interface IBtnProps extends ButtonProps {
 }
 
 const _renderField = (ops: any) => {
-  const { type = 'input', useDedefinedViewComponent, viewing, ...props } = ops;
+  const { type = 'input', useDedefinedViewComponent, ...props } = ops;
   type fieldType = keyof typeof FILELDS;
   const resType: fieldType = type;
   return FILELDS[resType]({ ...props });
@@ -156,6 +156,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     }
     const { initialValues = {}, form, components, ...otherProps} = this.props;
     const tempOps: any = { ...otherProps,  ...ops};
+    const { viewing, ...usingInEleOps } = ops;
     return (
       tempOps.viewing ?
       _renderFieldViewing({
@@ -173,7 +174,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
           initialValue: initialValues[name] || initialValue,
           rules,
           ...validateOps
-        })(_renderField(ops))}
+        })(_renderField(usingInEleOps))}
       </Form.Item>
     );
   }
