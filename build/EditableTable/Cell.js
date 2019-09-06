@@ -67,7 +67,7 @@ class EditCell extends PureComponent {
             const { form, rowIndex } = values;
             this.form = form;
             const { dataIndex, record, type, rules, fieldops, render, } = this.props;
-            const { validateOps, viewing, useDefinedViewingComponent, viewingValueRender } = fieldops;
+            const { validateOps, useDefinedViewingComponent, viewingValueRender, viewing, ...otherFieldOps } = fieldops;
             return render ? render(record, rowIndex) : (viewing ?
                 this._renderFieldViewing({
                     dataIndex,
@@ -79,7 +79,7 @@ class EditCell extends PureComponent {
                     rules,
                     initialValue: record[dataIndex],
                     ...validateOps
-                })(this.renderField({ type, ...fieldops, record, rowIndex, form }))));
+                })(this.renderField({ type, ...otherFieldOps, record, rowIndex, form }))));
         };
         Object.assign(FILELDS, props.components);
     }

@@ -84,9 +84,10 @@ class EditCell extends PureComponent<IColProps> {
     } = this.props;
     const {
       validateOps,
-      viewing,
       useDefinedViewingComponent,
-      viewingValueRender } = fieldops;
+      viewingValueRender,
+      viewing,
+      ...otherFieldOps } = fieldops;
     return render ? render(record, rowIndex) : (
       viewing ?
       this._renderFieldViewing({
@@ -99,7 +100,7 @@ class EditCell extends PureComponent<IColProps> {
           rules,
           initialValue: record[dataIndex],
           ...validateOps
-        })(this.renderField({ type, ...fieldops, record, rowIndex, form }))}
+        })(this.renderField({ type, ...otherFieldOps, record, rowIndex, form }))}
       </Form.Item>
     );
   }

@@ -177,7 +177,6 @@ class Page extends Component {
     return (
       <Form
         onSubmit={this.submit}
-        viewing={true}
         titleDividerLine={true}
         multiple={true}
         components={components}
