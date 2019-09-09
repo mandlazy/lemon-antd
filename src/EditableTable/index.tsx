@@ -6,17 +6,15 @@ import { ITableProps, IColProps } from '../Table';
 import Table from '../Table';
 
 export interface IEditTableProps extends ITableProps {
-  onChange?: (data: any, error: any) => void;
+  onChange?: (data: any, error: any, values: any) => void;
   onError?: (error: any) => void;
+  onInputChange?: (values: any) => void;
 }
 
 class EditableTable extends PureComponent <IEditTableProps> {
   _data: any = [];
+  _allData: any = [];
   _errors: any = [];
-  constructor(props: IEditTableProps) {
-    super(props);
-    this._data = props.data;
-  }
   handleErrors = (rowIndex: number, errors: any, hasError: boolean) => {
     if (hasError) {
       this._errors[rowIndex] = errors;
@@ -38,14 +36,24 @@ class EditableTable extends PureComponent <IEditTableProps> {
     this.handleValues(rowIndex, values, hasError);
     this.handleErrors(rowIndex, errors, hasError);
     if (onChange) {
-      onChange(this._errors, this._data);
+      onChange(this._errors, this._data, this._allData);
     }
     if (onError) {
       onError(this._errors);
     }
   }
+  handleChange = (values: any, rowIndex: number) => {
+     const { onInputChange } = this.props;
+     this._allData[rowIndex] = values;
+     if (onInputChange) {
+       onInputChange(this._allData);
+     }
+  }
   render() {
-    const { data, columns, viewing, components, className = '' , fixedWidth} = this.props;
+    const { data = [], columns, components, className = '' , fixedWidth} = this.props;
+    this._data = data.concat();
+    this._allData = data.concat();
+    let { viewing } = this.props;
     const _components = {
       body: {
         row: EditRow,
@@ -53,19 +61,29 @@ class EditableTable extends PureComponent <IEditTableProps> {
       }
     };
     const _columns = columns.map((col: IColProps) => {
+      if (col.viewing !== undefined) {
+        viewing = col.viewing;
+      }
       return {
         ...col,
-        onCell: (record: any) => ({
-          record,
-          components,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          handleSave: this.handleSave,
-          type: col.type,
-          rules: col.rules,
-          render: col.render,
-          fieldops: { viewing, ...col }
-        })
+        onCell: (record: any) => {
+          const { disabled, ...otherRecord } = record;
+          if (record.disabled !== undefined) {
+            viewing = record.disabled;
+          }
+          return {
+            record: otherRecord,
+            components,
+            dataIndex: col.dataIndex,
+            title: col.title,
+            handleSave: this.handleSave,
+            handleChange: this.handleChange,
+            type: col.type,
+            rules: col.rules,
+            render: col.render,
+            fieldops: { viewing, ...col}
+          };
+        }
       };
     });
     return (

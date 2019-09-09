@@ -18,4 +18,4 @@ const EditableRow = (props: IRowProps) => {
   );
 };
 
-export default Form.create<IRowProps>({name: 'EditableRow'})(EditableRow);
+export default Form.create<IRowProps>()(EditableRow);

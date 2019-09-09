@@ -7,6 +7,7 @@ class EditCell extends PureComponent {
     constructor(props) {
         super(props);
         this.form = undefined;
+        this.firstRending = true;
         this.renderField = (ops) => {
             const { type = 'input', dataIndex, rowIndex, ...props } = ops;
             const resType = type;
@@ -14,11 +15,16 @@ class EditCell extends PureComponent {
                 name: dataIndex,
                 ['data-row-index']: rowIndex,
                 onBlur: () => { this.save(dataIndex, rowIndex); },
+                onChange: (e) => { this.change(e.target ? e.target.value : e, dataIndex, rowIndex); },
                 ...props
             });
         };
+        this.change = (value, dataIndex, rowIndex) => {
+            const { record } = this.props;
+            this.props.handleChange({ ...record, [dataIndex]: value }, rowIndex);
+        };
         this.save = (name, rowIndex) => {
-            const { record, handleSave, data } = this.props;
+            const { record, handleSave } = this.props;
             const { getFieldsError, validateFields } = this.form;
             validateFields([name], (error, values) => {
                 const errors = {};
@@ -66,25 +72,27 @@ class EditCell extends PureComponent {
         this.renderCell = (values) => {
             const { form, rowIndex } = values;
             this.form = form;
-            const { dataIndex, record, type, rules, fieldops, render, } = this.props;
+            form.resetFields();
+            const { dataIndex, record = {}, type, rules, fieldops, render, } = this.props;
             const { validateOps, useDefinedViewingComponent, viewingValueRender, viewing, ...otherFieldOps } = fieldops;
+            const value = record[dataIndex];
             return render ? render(record, rowIndex) : (viewing ?
                 this._renderFieldViewing({
                     dataIndex,
                     useDefinedViewingComponent,
                     viewingValueRender,
-                    value: record[dataIndex]
+                    value
                 }) :
                 React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {
                     rules,
-                    initialValue: record[dataIndex],
+                    initialValue: value,
                     ...validateOps
                 })(this.renderField({ type, ...otherFieldOps, record, rowIndex, form }))));
         };
         Object.assign(FILELDS, props.components);
     }
     render() {
-        const { dataIndex, record, index, handleSave, children, components, render, ...restProps } = this.props;
+        const { dataIndex, record, index, handleSave, handleChange, children, components, render, ...restProps } = this.props;
         return (React.createElement("td", Object.assign({}, restProps), React.createElement(EditContext.Consumer, null, this.renderCell)));
     }
 }

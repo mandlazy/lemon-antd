@@ -6,6 +6,7 @@ import { COMMON_FILELDS} from '../data/fields';
 const FILELDS = COMMON_FILELDS;
 class EditCell extends PureComponent<IColProps> {
   form: any = undefined;
+  firstRending = true;
   constructor(props: IColProps) {
     super(props);
     Object.assign(FILELDS, props.components);
@@ -18,10 +19,15 @@ class EditCell extends PureComponent<IColProps> {
       name: dataIndex,
       ['data-row-index']: rowIndex,
       onBlur: () => { this.save(dataIndex, rowIndex); },
+      onChange: (e: any) => { this.change(e.target ? e.target.value : e, dataIndex, rowIndex); },
       ...props });
   }
+  change = (value: any, dataIndex: string, rowIndex: number) => {
+    const { record } = this.props;
+    this.props.handleChange({ ...record, [dataIndex]: value }, rowIndex);
+  }
   save = (name: string, rowIndex: number) => {
-    const { record, handleSave, data } = this.props;
+    const { record, handleSave } = this.props;
     const { getFieldsError, validateFields } = this.form;
     validateFields([ name ], (error: any, values: any) => {
       const errors: any = {};
@@ -74,9 +80,10 @@ class EditCell extends PureComponent<IColProps> {
   renderCell = (values: any) => {
     const { form, rowIndex } = values;
     this.form = form;
+    form.resetFields();
     const {
       dataIndex,
-      record,
+      record = {},
       type,
       rules,
       fieldops,
@@ -88,19 +95,20 @@ class EditCell extends PureComponent<IColProps> {
       viewingValueRender,
       viewing,
       ...otherFieldOps } = fieldops;
+    const value = record[dataIndex];
     return render ? render(record, rowIndex) : (
       viewing ?
       this._renderFieldViewing({
         dataIndex,
         useDefinedViewingComponent,
         viewingValueRender,
-        value: record[dataIndex]}) :
+        value}) :
        <Form.Item style={{ margin: 0 }}>
         {form.getFieldDecorator(dataIndex, {
           rules,
-          initialValue: record[dataIndex],
+          initialValue: value,
           ...validateOps
-        })(this.renderField({ type, ...otherFieldOps, record, rowIndex, form }))}
+        })(this.renderField({ type, ...otherFieldOps, record, rowIndex, form}))}
       </Form.Item>
     );
   }
@@ -110,6 +118,7 @@ class EditCell extends PureComponent<IColProps> {
       record,
       index,
       handleSave,
+      handleChange,
       children,
       components,
       render,

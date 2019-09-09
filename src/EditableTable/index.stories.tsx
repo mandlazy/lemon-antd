@@ -10,7 +10,7 @@ const DeleteBtn = (props: any) => {
   const { onClick } = props;
   return (
     <Button onClick={() => {
-      onClick(props['row-index']);
+      onClick(props['data-row-index']);
     }}>删除</Button>
   );
 };
@@ -39,7 +39,7 @@ export const columns: any[] = [
     type: 'select',
     options: ['1', '2', '3'],
     width: 100,
-    render: (record: any) => <span>{record.leftOperator}</span>
+    render: (record: any = {}) => <span>{record.leftOperator}</span>
   },
   {
     title: '右包含',
@@ -67,6 +67,7 @@ interface ICol {
   rightOperator?: string;
   termDay?: string;
   checked?: boolean;
+  disabled?: boolean;
 }
 
 const initialData: ICol = {
@@ -75,7 +76,8 @@ const initialData: ICol = {
   leftOperator: '',
   rightOperator: '',
   termDay: '',
-  checked: false
+  checked: false,
+  disabled: false
 };
 function EditTableComp() {
   const [ data, setData ] = useState<ICol[]>([
@@ -85,7 +87,8 @@ function EditTableComp() {
       leftOperator: '232',
       rightOperator: '',
       termDay: '',
-      checked: false
+      checked: false,
+      disabled: true
     }
   ]);
   const add = () => {
@@ -93,13 +96,18 @@ function EditTableComp() {
   };
   const index = columns.findIndex((col) => col.dataIndex === 'delete');
   columns[index].onClick = (rowIndex: number) => {
-    const _data = [...data];
+    const _data = data.concat();
     _data.splice(rowIndex, 1);
     setData(_data);
   };
-  const onChange = (values: any) => {
+  const newData = data.map((d, i) => ({ ...d, disabled: i === 0 ? true : false}));
+  const onChange = (errors: any, values: any, allValue: any) => {
     // tslint:disable-next-line
     console.log(values);
+  };
+  const onInputChange = (values: any) => {
+    // tslint:disable-next-line
+    setData(values);
   };
   const onError = (errors: any) => {
     // tslint:disable-next-line
@@ -116,9 +124,10 @@ function EditTableComp() {
       <EditTable
         viewing={true}
         onError={onError}
+        onInputChange={onInputChange}
         onChange={onChange}
         components={{ deleteBtn: DeleteBtn }}
-        data={data}
+        data={newData}
         columns={columns} />
     </Form>
   );

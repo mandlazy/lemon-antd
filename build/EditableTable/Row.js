@@ -7,5 +7,5 @@ const EditableRow = (props) => {
     return (React.createElement(EditableContext.Provider, { value: { form, rowIndex } },
         React.createElement("tr", Object.assign({}, otherProps))));
 };
-export default Form.create({ name: 'EditableRow' })(EditableRow);
+export default Form.create()(EditableRow);
 //# sourceMappingURL=Row.js.map

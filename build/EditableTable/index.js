@@ -4,9 +4,10 @@ import EditCell from './Cell';
 import EditRow from './Row';
 import Table from '../Table';
 class EditableTable extends PureComponent {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super(...arguments);
         this._data = [];
+        this._allData = [];
         this._errors = [];
         this.handleErrors = (rowIndex, errors, hasError) => {
             if (hasError) {
@@ -31,16 +32,25 @@ class EditableTable extends PureComponent {
             this.handleValues(rowIndex, values, hasError);
             this.handleErrors(rowIndex, errors, hasError);
             if (onChange) {
-                onChange(this._errors, this._data);
+                onChange(this._errors, this._data, this._allData);
             }
             if (onError) {
                 onError(this._errors);
             }
         };
-        this._data = props.data;
+        this.handleChange = (values, rowIndex) => {
+            const { onInputChange } = this.props;
+            this._allData[rowIndex] = values;
+            if (onInputChange) {
+                onInputChange(this._allData);
+            }
+        };
     }
     render() {
-        const { data, columns, viewing, components, className = '', fixedWidth } = this.props;
+        const { data = [], columns, components, className = '', fixedWidth } = this.props;
+        this._data = data.concat();
+        this._allData = data.concat();
+        let { viewing } = this.props;
         const _components = {
             body: {
                 row: EditRow,
@@ -48,19 +58,29 @@ class EditableTable extends PureComponent {
             }
         };
         const _columns = columns.map((col) => {
+            if (col.viewing !== undefined) {
+                viewing = col.viewing;
+            }
             return {
                 ...col,
-                onCell: (record) => ({
-                    record,
-                    components,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
-                    handleSave: this.handleSave,
-                    type: col.type,
-                    rules: col.rules,
-                    render: col.render,
-                    fieldops: { viewing, ...col }
-                })
+                onCell: (record) => {
+                    const { disabled, ...otherRecord } = record;
+                    if (record.disabled !== undefined) {
+                        viewing = record.disabled;
+                    }
+                    return {
+                        record: otherRecord,
+                        components,
+                        dataIndex: col.dataIndex,
+                        title: col.title,
+                        handleSave: this.handleSave,
+                        handleChange: this.handleChange,
+                        type: col.type,
+                        rules: col.rules,
+                        render: col.render,
+                        fieldops: { viewing, ...col }
+                    };
+                }
             };
         });
         return (React.createElement(Table, { className: 'editable ' + className, components: _components, fixedWidth: fixedWidth, rowClassName: () => 'editable-row', bordered: true, pagination: false, data: data, columns: _columns }));
