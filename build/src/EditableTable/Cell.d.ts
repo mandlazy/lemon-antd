@@ -8,7 +8,7 @@ declare class EditCell extends PureComponent<IColProps> {
     change: (value: any, dataIndex: string, rowIndex: number) => void;
     save: (name: string, rowIndex: number) => void;
     _renderFieldViewing: (ops: any) => JSX.Element;
-    renderCell: (values: any) => any;
+    renderCell: (values: any) => JSX.Element;
     render(): JSX.Element;
 }
 export default EditCell;

@@ -10,6 +10,7 @@ export interface IRowProps {
 
 const EditableRow = (props: IRowProps) => {
   const { form, ...otherProps } = props;
+  form.resetFields();
   const rowIndex = otherProps['data-row-key'];
   return (
     <EditableContext.Provider value={{ form, rowIndex }}>
