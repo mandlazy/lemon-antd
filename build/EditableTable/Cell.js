@@ -15,9 +15,7 @@ class EditCell extends PureComponent {
                 name: dataIndex,
                 ['data-row-index']: rowIndex,
                 onBlur: () => { this.save(dataIndex, rowIndex); },
-                onChange: (e) => {
-                    this.change(e.target ? e.target.value : e, dataIndex, rowIndex);
-                },
+                onChange: (e) => { this.change(e.target ? e.target.value : e, dataIndex, rowIndex); },
                 ...props
             });
         };
@@ -74,10 +72,10 @@ class EditCell extends PureComponent {
         this.renderCell = (values) => {
             const { form, rowIndex } = values;
             this.form = form;
-            const { dataIndex, record = {}, type, rules, fieldops } = this.props;
+            const { dataIndex, record = {}, type, rules, fieldops, render, } = this.props;
             const { validateOps, useDefinedViewingComponent, viewingValueRender, viewing, ...otherFieldOps } = fieldops;
             const value = record[dataIndex];
-            return (viewing ?
+            return render ? render(record, rowIndex) : (viewing ?
                 this._renderFieldViewing({
                     dataIndex,
                     useDefinedViewingComponent,

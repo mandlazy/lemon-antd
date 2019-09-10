@@ -19,9 +19,7 @@ class EditCell extends PureComponent<IColProps> {
       name: dataIndex,
       ['data-row-index']: rowIndex,
       onBlur: () => { this.save(dataIndex, rowIndex); },
-      onChange: (e: any) => {
-        this.change(e.target ? e.target.value : e, dataIndex, rowIndex);
-      },
+      onChange: (e: any) => { this.change(e.target ? e.target.value : e, dataIndex, rowIndex); },
       ...props });
   }
   change = (value: any, dataIndex: string, rowIndex: number) => {
@@ -87,7 +85,8 @@ class EditCell extends PureComponent<IColProps> {
       record = {},
       type,
       rules,
-      fieldops
+      fieldops,
+      render,
     } = this.props;
     const {
       validateOps,
@@ -96,7 +95,7 @@ class EditCell extends PureComponent<IColProps> {
       viewing,
       ...otherFieldOps } = fieldops;
     const value = record[dataIndex];
-    return  (
+    return render ? render(record, rowIndex) : (
       viewing ?
       this._renderFieldViewing({
         dataIndex,
