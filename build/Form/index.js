@@ -82,6 +82,8 @@ class DForm extends PureComponent {
             const { initialValues = {}, form, components, ...otherProps } = this.props;
             const tempOps = { ...otherProps, ...ops };
             const { viewing, ...usingInEleOps } = ops;
+            const fieldValue = (initialValues[name] !== undefined
+                && initialValues[name] !== '') ? initialValues[name] : initialValue;
             return (tempOps.viewing ?
                 _renderFieldViewing({
                     ...ops,
@@ -92,10 +94,10 @@ class DForm extends PureComponent {
                     components,
                     viewingValueRender,
                     useDefinedViewingComponent,
-                    value: initialValues[name] || initialValue || ops.value
+                    value: fieldValue || ops.value
                 }) :
                 React.createElement(Form.Item, { label: label, key: name + index, className: className }, form.getFieldDecorator(name, {
-                    initialValue: initialValues[name] || initialValue,
+                    initialValue: fieldValue,
                     rules,
                     ...validateOps
                 })(_renderField(usingInEleOps))));
