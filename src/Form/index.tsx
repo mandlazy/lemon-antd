@@ -24,6 +24,7 @@ export interface IFormProps {
   multiple?: boolean;
   type?: 'horizontal' | 'vertical';
   components?: any;
+  validateOps?: any;
   onCancel?: () => {};
   onSubmit?: (t: object) => {};
   initialValues?: any;
@@ -125,8 +126,14 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     if (e) {
       e.preventDefault();
     }
-    const { onSubmit, onError, form } = this.props;
-    form.validateFields((errs: any, values: object) => {
+    const {
+      onSubmit,
+      onError,
+      form,
+      validateOps = {
+        scroll: { offsetTop:  300 }
+      }} = this.props;
+    form.validateFieldsAndScroll({ ...validateOps }, (errs: any, values: object) => {
       if (!errs) {
         if (onSubmit) {
           onSubmit(values);

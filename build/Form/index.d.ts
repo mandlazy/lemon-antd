@@ -19,6 +19,7 @@ export interface IFormProps {
     multiple?: boolean;
     type?: 'horizontal' | 'vertical';
     components?: any;
+    validateOps?: any;
     onCancel?: () => {};
     onSubmit?: (t: object) => {};
     initialValues?: any;
