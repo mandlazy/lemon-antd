@@ -126,14 +126,17 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     if (e) {
       e.preventDefault();
     }
+    const defaultValidateOps = {
+      first: true,
+      scroll: { offsetTop:  300 }
+    };
     const {
       onSubmit,
       onError,
       form,
-      validateOps = {
-        scroll: { offsetTop:  300 }
-      }} = this.props;
-    form.validateFieldsAndScroll({ ...validateOps }, (errs: any, values: object) => {
+      validateOps = {},
+      } = this.props;
+    form.validateFieldsAndScroll({ ...defaultValidateOps, ...validateOps }, (errs: any, values: object) => {
       if (!errs) {
         if (onSubmit) {
           onSubmit(values);
