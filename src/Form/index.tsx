@@ -157,6 +157,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     fieldType = 'string',
     viewingValueRender,
     useDefinedViewingComponent,
+    filterZero = true,
     validateOps = {},
     ...ops
   }: IFieldItem, index: number ) => {
@@ -169,7 +170,8 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     const { viewing, ...usingInEleOps } = ops;
     const fieldValue = (
       initialValues[name] !== undefined
-      && initialValues[name] !== '') ? initialValues[name] : initialValue;
+      && initialValues[name] !== '')
+      && (filterZero && initialValues[name] !== 0 ) ? initialValues[name] : initialValue;
     return (
       tempOps.viewing ?
       _renderFieldViewing({

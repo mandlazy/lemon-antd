@@ -78,7 +78,7 @@ class DForm extends PureComponent {
                 }
             });
         };
-        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', viewingValueRender, useDefinedViewingComponent, validateOps = {}, ...ops }, index) => {
+        this.renderField = ({ label, rules, name, initialValue, className, fieldType = 'string', viewingValueRender, useDefinedViewingComponent, filterZero = true, validateOps = {}, ...ops }, index) => {
             rules = [...(rules || [])];
             if (fieldType === 'string') {
                 rules.unshift(trimRule);
@@ -87,7 +87,8 @@ class DForm extends PureComponent {
             const tempOps = { ...otherProps, ...ops };
             const { viewing, ...usingInEleOps } = ops;
             const fieldValue = (initialValues[name] !== undefined
-                && initialValues[name] !== '') ? initialValues[name] : initialValue;
+                && initialValues[name] !== '')
+                && (filterZero && initialValues[name] !== 0) ? initialValues[name] : initialValue;
             return (tempOps.viewing ?
                 _renderFieldViewing({
                     ...ops,
