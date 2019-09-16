@@ -1,6 +1,6 @@
 {
   "name": "@mandlazy/lemon-antd",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "main": "build/index.js",
   "types": "build/lib/index.d.ts",
   "repository": {

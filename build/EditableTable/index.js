@@ -61,14 +61,15 @@ class EditableTable extends PureComponent {
             if (col.viewing !== undefined) {
                 viewing = col.viewing;
             }
+            const { colsOps, ...otherCols } = col;
             return {
-                ...col,
+                ...otherCols,
+                ...colsOps,
                 onCell: (record) => {
                     const { disabled, ...otherRecord } = record;
                     if (record.disabled !== undefined) {
                         viewing = record.disabled;
                     }
-                    const { colsOps, ...fieldops } = col;
                     return {
                         record: otherRecord,
                         components,
@@ -79,7 +80,7 @@ class EditableTable extends PureComponent {
                         type: col.type,
                         rules: col.rules,
                         render: col.render,
-                        fieldops
+                        fieldops: otherCols
                     };
                 }
             };

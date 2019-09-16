@@ -64,14 +64,15 @@ class EditableTable extends PureComponent <IEditTableProps> {
       if (col.viewing !== undefined) {
         viewing = col.viewing;
       }
+      const { colsOps, ...otherCols } = col;
       return {
-        ...col,
+        ...otherCols,
+        ...colsOps,
         onCell: (record: any) => {
           const { disabled, ...otherRecord } = record;
           if (record.disabled !== undefined) {
             viewing = record.disabled;
           }
-          const { colsOps, ...fieldops } = col;
           return {
             record: otherRecord,
             components,
@@ -82,7 +83,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
             type: col.type,
             rules: col.rules,
             render: col.render,
-            fieldops
+            fieldops: otherCols
           };
         }
       };

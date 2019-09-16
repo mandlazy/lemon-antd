@@ -56,29 +56,31 @@ export const columns: any[] = [
   },
   {
     title: '有效期（天）',
-    filterIcon: () => (
-      <Icon type='edit' className='edit-btn' />
-    ),
-    filterDropdown: (res: any) => {
-      const { setSelectedKeys, selectedKeys, confirm } = res;
-      return (
-        <div style={{ padding: 8 }}>
-        <Input
-          placeholder={`输入批量设置的值`}
-          value={selectedKeys[0]}
-          onChange={(e: any) => { setSelectedKeys(e.target.value ? [e.target.value] : []); }}
-          onPressEnter={() => handleSave(selectedKeys, confirm)}
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-        />
-        <Button
-          type='primary'
-          onClick={() => handleSave(selectedKeys, confirm)}
-          size='small'
-          style={{ width: 90, marginRight: 8 }}>
-          保存
-        </Button>
-      </div>
-      );
+    colsOps: {
+      filterIcon: () => (
+        <Icon type='edit' className='edit-btn' />
+      ),
+      filterDropdown: (res: any) => {
+        const { setSelectedKeys, selectedKeys, confirm } = res;
+        return (
+          <div style={{ padding: 8 }}>
+          <Input
+            placeholder={`输入批量设置的值`}
+            value={selectedKeys[0]}
+            onChange={(e: any) => { setSelectedKeys(e.target.value ? [e.target.value] : []); }}
+            onPressEnter={() => handleSave(selectedKeys, confirm)}
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type='primary'
+            onClick={() => handleSave(selectedKeys, confirm)}
+            size='small'
+            style={{ width: 90, marginRight: 8 }}>
+            保存
+          </Button>
+        </div>
+        );
+      }
     },
     dataIndex: 'termDay',
     width: 120
