@@ -112,19 +112,9 @@ class EditCell extends PureComponent<IColProps> {
     );
   }
   render() {
-    const {
-      dataIndex,
-      record,
-      index,
-      handleSave,
-      handleChange,
-      children,
-      components,
-      render,
-      ...restProps
-    } = this.props;
+    const { className } = this.props;
     return (
-      <td {...restProps}>
+      <td className={className}>
         {<EditContext.Consumer>{this.renderCell}</EditContext.Consumer>}
       </td>
     );

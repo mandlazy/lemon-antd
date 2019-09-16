@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-react-router';
-import { Button, Form } from 'antd';
+import { Button, Form, Icon, Input } from 'antd';
 import EditTable from './index';
 const stories = storiesOf('EditTable', module);
 const required = { required: true, message: '必填' };
@@ -14,6 +14,12 @@ const DeleteBtn = (props: any) => {
     }}>删除</Button>
   );
 };
+const handleSave = (selectedKeys: any, confirm: any) => {
+   // tslint:disable-next-line
+  console.log(selectedKeys);
+  // tslint:disable-next-line
+  confirm();
+}
 export const columns: any[] = [
   {
     title: '筛选',
@@ -46,10 +52,34 @@ export const columns: any[] = [
     dataIndex: 'rightOperator',
     type: 'select',
     width: 100,
-    rules: [required ]
+    rules: [required ],
   },
   {
     title: '有效期（天）',
+    filterIcon: () => (
+      <Icon type="edit" className="edit-btn" />
+    ),
+    filterDropdown: (res: any) => {
+      const { setSelectedKeys, selectedKeys, confirm } = res;
+      return (
+        <div style={{ padding: 8 }}>
+        <Input
+          placeholder={`输入批量设置的值`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSave(selectedKeys, confirm)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => handleSave(selectedKeys, confirm)}
+          size="small"
+          style={{ width: 90, marginRight: 8 }}>
+          保存
+        </Button>
+      </div>
+      )
+    },
     dataIndex: 'termDay',
     width: 120
   },
