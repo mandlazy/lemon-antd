@@ -83,7 +83,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
             type: col.type,
             rules: col.rules,
             render: col.render,
-            fieldops: otherCols
+            fieldops: { viewing, ...otherCols}
           };
         }
       };
