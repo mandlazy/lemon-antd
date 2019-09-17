@@ -134,10 +134,11 @@ class DForm extends PureComponent {
             if (showCancelBtn) {
                 btns = [...btns, this.cancelBtn];
             }
-            return (React.createElement("div", { className: 'form-btn-wrapper' }, btns.map((btn, index) => {
-                const { text, ...otherOps } = btn;
-                return (React.createElement(Button, Object.assign({ key: index }, otherOps), text));
-            })));
+            return (React.createElement("div", { className: 'form-btn-wrapper' },
+                React.createElement("div", { className: 'form-btn-container' }, btns.map((btn, index) => {
+                    const { text, ...otherOps } = btn;
+                    return (React.createElement(Button, Object.assign({ key: index }, otherOps), text));
+                }))));
         };
         this.cancelBtn = {
             className: 'form-cancel-btn',

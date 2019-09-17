@@ -240,6 +240,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     }
     return (
       <div className='form-btn-wrapper'>
+        <div className='form-btn-container'>
         {
           btns.map((btn: IBtnProps, index: number) => {
             const { text, ...otherOps } = btn;
@@ -248,6 +249,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
             );
           })
         }
+        </div>
       </div>
     );
   }
