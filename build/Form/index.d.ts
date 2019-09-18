@@ -17,6 +17,7 @@ export interface IFormProps {
     fields: Array<IFormProps | IFieldItem>;
     form: WrappedFormUtils;
     multiple?: boolean;
+    validateWithScroll?: boolean;
     type?: 'horizontal' | 'vertical';
     components?: any;
     validateOps?: any;

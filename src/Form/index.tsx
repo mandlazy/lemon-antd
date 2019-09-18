@@ -22,6 +22,7 @@ export interface IFormProps {
   fields: Array<IFormProps | IFieldItem>;
   form: WrappedFormUtils;
   multiple?: boolean;
+  validateWithScroll?: boolean;
   type?: 'horizontal' | 'vertical';
   components?: any;
   validateOps?: any;
@@ -134,9 +135,11 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
       onSubmit,
       onError,
       form,
+      validateWithScroll = true,
       validateOps = {},
       } = this.props;
-    form.validateFieldsAndScroll({ ...defaultValidateOps, ...validateOps }, (errs: any, values: object) => {
+    const fnName = validateWithScroll ? 'validateFieldsAndScroll' : 'validateFields';
+    form[fnName]({ ...defaultValidateOps, ...validateOps }, (errs: any, values: object) => {
       if (!errs) {
         if (onSubmit) {
           onSubmit(values);
