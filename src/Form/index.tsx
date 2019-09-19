@@ -128,7 +128,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
       e.preventDefault();
     }
     const defaultValidateOps = {
-      first: true,
+      first: false,
       scroll: { offsetTop:  300 }
     };
     const {
