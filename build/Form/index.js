@@ -100,7 +100,7 @@ class DForm extends PureComponent {
                     components,
                     viewingValueRender,
                     useDefinedViewingComponent,
-                    value: fieldValue || ops.value
+                    value: fieldValue
                 }) :
                 React.createElement(Form.Item, { label: label, key: name + index, className: className }, form.getFieldDecorator(name, {
                     initialValue: fieldValue,

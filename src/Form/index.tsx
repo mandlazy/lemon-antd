@@ -186,7 +186,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
         components,
         viewingValueRender,
         useDefinedViewingComponent,
-        value: fieldValue || ops.value }) :
+        value: fieldValue }) :
       <Form.Item label={label} key={name + index} className={className}>
         { form.getFieldDecorator(name, {
           initialValue: fieldValue,
