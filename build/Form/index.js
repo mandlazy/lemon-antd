@@ -89,7 +89,7 @@ class DForm extends PureComponent {
             const { viewing, ...usingInEleOps } = ops;
             const fieldValue = (initialValues[name] !== undefined
                 && initialValues[name] !== '')
-                && (filterZero && initialValues[name] !== 0) ? initialValues[name] : initialValue;
+                && (!filterZero || initialValues[name] !== 0) ? initialValues[name] : initialValue;
             return (tempOps.viewing ?
                 _renderFieldViewing({
                     ...ops,
