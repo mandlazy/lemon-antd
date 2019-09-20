@@ -174,7 +174,7 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     const fieldValue = (
       initialValues[name] !== undefined
       && initialValues[name] !== '')
-      && (filterZero && initialValues[name] !== 0 ) ? initialValues[name] : initialValue;
+      && (!filterZero || initialValues[name] !== 0 ) ? initialValues[name] : initialValue;
     return (
       tempOps.viewing ?
       _renderFieldViewing({
