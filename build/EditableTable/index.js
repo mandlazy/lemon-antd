@@ -65,12 +65,13 @@ class EditableTable extends PureComponent {
             return {
                 ...otherCols,
                 ...colsOps,
-                onCell: (record) => {
+                onCell: (record, rowIndex) => {
                     const { disabled, ...otherRecord } = record;
                     if (record.disabled !== undefined) {
                         viewing = record.disabled;
                     }
                     return {
+                        rowIndex,
                         record: otherRecord,
                         components,
                         dataIndex: col.dataIndex,
@@ -85,7 +86,7 @@ class EditableTable extends PureComponent {
                 }
             };
         });
-        return (React.createElement(Table, { className: 'editable ' + className, components: _components, fixedWidth: fixedWidth, rowClassName: () => 'editable-row', bordered: true, pagination: false, data: data, columns: _columns }));
+        return (React.createElement(Table, { className: 'editable ' + className, components: _components, fixedWidth: fixedWidth, rowKey: (record, index) => new Date().getTime() + '_' + index, rowClassName: () => 'editable-row', bordered: true, pagination: false, data: data, columns: _columns }));
     }
 }
 export default EditableTable;

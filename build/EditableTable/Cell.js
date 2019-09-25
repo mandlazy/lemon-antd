@@ -70,9 +70,9 @@ class EditCell extends PureComponent {
             return (React.createElement("div", { className: 'form-label-wrapper' }, value));
         };
         this.renderCell = (values) => {
-            const { form, rowIndex } = values;
+            const { form } = values;
             this.form = form;
-            const { dataIndex, record = {}, type, rules, fieldops, render, } = this.props;
+            const { dataIndex, record = {}, type, rules, fieldops, render, rowIndex, } = this.props;
             const { validateOps, useDefinedViewingComponent, viewingValueRender, viewing, ...otherFieldOps } = fieldops;
             const value = record[dataIndex];
             return render ? render(record, rowIndex) : (viewing ?

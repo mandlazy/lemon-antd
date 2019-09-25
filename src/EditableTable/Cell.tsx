@@ -78,7 +78,7 @@ class EditCell extends PureComponent<IColProps> {
     );
 }
   renderCell = (values: any) => {
-    const { form, rowIndex } = values;
+    const { form } = values;
     this.form = form;
     const {
       dataIndex,
@@ -87,6 +87,7 @@ class EditCell extends PureComponent<IColProps> {
       rules,
       fieldops,
       render,
+      rowIndex,
     } = this.props;
     const {
       validateOps,

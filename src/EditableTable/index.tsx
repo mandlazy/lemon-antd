@@ -68,12 +68,13 @@ class EditableTable extends PureComponent <IEditTableProps> {
       return {
         ...otherCols,
         ...colsOps,
-        onCell: (record: any) => {
+        onCell: (record: any, rowIndex: number) => {
           const { disabled, ...otherRecord } = record;
           if (record.disabled !== undefined) {
             viewing = record.disabled;
           }
           return {
+            rowIndex,
             record: otherRecord,
             components,
             dataIndex: col.dataIndex,
@@ -93,6 +94,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
           className={'editable '  + className}
           components={_components}
           fixedWidth={fixedWidth}
+          rowKey={ (record: any, index: number) => new Date().getTime() + '_' + index }
           rowClassName={() => 'editable-row'}
           bordered={true}
           pagination={false}
