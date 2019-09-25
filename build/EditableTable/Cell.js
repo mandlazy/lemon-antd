@@ -49,7 +49,7 @@ class EditCell extends PureComponent {
                 value = this.renderField({ ...ops, viewing: true, value });
             }
             else if (viewingValueRender) {
-                value = viewingValueRender(value);
+                value = viewingValueRender(value, this.props.record);
             }
             else {
                 if (options && value) {

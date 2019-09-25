@@ -57,7 +57,7 @@ class EditCell extends PureComponent<IColProps> {
     if (value && useDefinedViewingComponent) {
       value = this.renderField({...ops, viewing: true, value});
     } else if (viewingValueRender) {
-      value = viewingValueRender(value);
+      value = viewingValueRender(value, this.props.record);
     } else {
       if (options && value) {
         const text = options.find((option: any) => {
