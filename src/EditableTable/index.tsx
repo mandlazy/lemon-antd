@@ -94,7 +94,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
           className={'editable '  + className}
           components={_components}
           fixedWidth={fixedWidth}
-          rowKey={ (record: any, index: number) => new Date().getTime() + '_' + index }
+          rowKey={ (record: any = {}, index: number) => record.id || index }
           rowClassName={() => 'editable-row'}
           bordered={true}
           pagination={false}

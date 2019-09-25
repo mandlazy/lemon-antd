@@ -86,7 +86,7 @@ class EditableTable extends PureComponent {
                 }
             };
         });
-        return (React.createElement(Table, { className: 'editable ' + className, components: _components, fixedWidth: fixedWidth, rowKey: (record, index) => new Date().getTime() + '_' + index, rowClassName: () => 'editable-row', bordered: true, pagination: false, data: data, columns: _columns }));
+        return (React.createElement(Table, { className: 'editable ' + className, components: _components, fixedWidth: fixedWidth, rowKey: (record = {}, index) => record.id || index, rowClassName: () => 'editable-row', bordered: true, pagination: false, data: data, columns: _columns }));
     }
 }
 export default EditableTable;
