@@ -45,17 +45,18 @@ let selectKeysTemp = {
     openKeys: [],
     selectedKeys: []
 };
-const handSubMenuItem = (item, value) => {
+const handSubMenuItem = (item, value, pItem) => {
     const next = new RegExp('\\/?' + value).test(item.to);
     if (next)
         selectKeysTemp.selectedKeys.push(item.name);
     selectKeysTemp.next = !next;
+    if (pItem && selectKeysTemp.selectedKeys.length > 0) {
+        selectKeysTemp.openKeys.push(pItem.name);
+    }
 };
 const handMenuItem = (items, value, useDefault, pItem) => {
-    if (pItem)
-        selectKeysTemp.openKeys.push(pItem.name);
     items.every(({ children, ...item }) => {
-        children ? handMenuItem(children, value, useDefault, item) : handSubMenuItem(item, value);
+        children ? handMenuItem(children, value, useDefault, item) : handSubMenuItem(item, value, pItem);
         return selectKeysTemp.next ? true : false;
     });
     const { selectedKeys, openKeys } = selectKeysTemp;

@@ -124,16 +124,18 @@ let selectKeysTemp: ISelectKeyArg = {
   openKeys: [],
   selectedKeys: []
 };
-const handSubMenuItem = (item: IMenuItem, value: string) => {
+const handSubMenuItem = (item: IMenuItem, value: string, pItem?: IMenuItem) => {
   const next = new RegExp('\\/?' + value).test(item.to);
   if (next) selectKeysTemp.selectedKeys.push(item.name);
   selectKeysTemp.next = !next;
+  if (pItem && selectKeysTemp.selectedKeys.length > 0) {
+    selectKeysTemp.openKeys.push(pItem.name);
+  }
 };
 const handMenuItem =
   (items: IMenuItem[], value: string, useDefault: boolean, pItem?: IMenuItem): IDefaultKeysOps => {
-    if (pItem) selectKeysTemp.openKeys.push(pItem.name);
     items.every(({ children, ...item }) => {
-      children ? handMenuItem(children, value, useDefault, item) : handSubMenuItem(item, value);
+      children ? handMenuItem(children, value, useDefault, item) : handSubMenuItem(item, value, pItem);
       return selectKeysTemp.next ? true : false;
     });
     const { selectedKeys, openKeys } = selectKeysTemp;
