@@ -87,7 +87,8 @@ class DateRangePicker extends Component<IProps, IState> {
     const {
       className = '',
       showTime = false,
-      prefix = '',
+      startTimeTitle,
+      endTimeTitle = '',
       value,
       isReset,
     } = this.props;
@@ -102,7 +103,7 @@ class DateRangePicker extends Component<IProps, IState> {
         <Col span={11}>
           <Label
             className='date-range-label'
-            title={prefix ? `${prefix}开始时间` : '开始时间'}
+            title={startTimeTitle}
           >
             <DatePicker
               disabledDate={this.disabledStartDate}
@@ -119,12 +120,12 @@ class DateRangePicker extends Component<IProps, IState> {
           className='date-range-span'
           span={1}
         >
-          至
+          -
         </Col>
         <Col span={11}>
           <Label
             className='date-range-label'
-            title={prefix ? `${prefix}结束时间` : '结束时间'}
+            title={endTimeTitle}
           >
             <DatePicker
               disabledDate={this.disabledEndDate}

@@ -64,7 +64,7 @@ class DateRangePicker extends Component {
         };
     }
     render() {
-        const { className = '', showTime = false, prefix = '', value, isReset, } = this.props;
+        const { className = '', showTime = false, startTimeTitle, endTimeTitle = '', value, isReset, } = this.props;
         const { endOpen } = this.state;
         if (isReset) {
             this.reset();
@@ -73,11 +73,11 @@ class DateRangePicker extends Component {
         this.format = 'YYYY-MM-DD' + (showTime ? ' HH:mm:ss' : '');
         return (React.createElement(Row, { gutter: 8, className: 'date-range ' + className },
             React.createElement(Col, { span: 11 },
-                React.createElement(Label, { className: 'date-range-label', title: prefix ? `${prefix}开始时间` : '开始时间' },
+                React.createElement(Label, { className: 'date-range-label', title: startTimeTitle },
                     React.createElement(DatePicker, { disabledDate: this.disabledStartDate, showTime: showTime, format: this.format, value: startTime ? moment(startTime) : undefined, placeholder: 'Start', onChange: this.handleTimeChange.bind(this, 'startTime'), onOpenChange: this.handleStartOpenChange }))),
-            React.createElement(Col, { className: 'date-range-span', span: 1 }, "\u81F3"),
+            React.createElement(Col, { className: 'date-range-span', span: 1 }, "-"),
             React.createElement(Col, { span: 11 },
-                React.createElement(Label, { className: 'date-range-label', title: prefix ? `${prefix}结束时间` : '结束时间' },
+                React.createElement(Label, { className: 'date-range-label', title: endTimeTitle },
                     React.createElement(DatePicker, { disabledDate: this.disabledEndDate, showTime: showTime, format: this.format, value: endTime ? moment(endTime) : undefined, placeholder: 'End', open: endOpen, onChange: this.handleTimeChange.bind(this, 'endTime'), onOpenChange: this.handleEndOpenChange })))));
     }
 }
