@@ -120,7 +120,7 @@ class DateRangePicker extends Component<IProps, IState> {
           className='date-range-span'
           span={1}
         >
-          --
+          -
         </Col>
         <Col span={11}>
           <Label

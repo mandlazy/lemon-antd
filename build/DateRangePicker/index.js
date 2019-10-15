@@ -75,7 +75,7 @@ class DateRangePicker extends Component {
             React.createElement(Col, { span: 11 },
                 React.createElement(Label, { className: 'date-range-label', title: startTimeTitle },
                     React.createElement(DatePicker, { disabledDate: this.disabledStartDate, showTime: showTime, format: this.format, value: startTime ? moment(startTime) : undefined, placeholder: 'Start', onChange: this.handleTimeChange.bind(this, 'startTime'), onOpenChange: this.handleStartOpenChange }))),
-            React.createElement(Col, { className: 'date-range-span', span: 1 }, "--"),
+            React.createElement(Col, { className: 'date-range-span', span: 1 }, "-"),
             React.createElement(Col, { span: 11 },
                 React.createElement(Label, { className: 'date-range-label', title: endTimeTitle },
                     React.createElement(DatePicker, { disabledDate: this.disabledEndDate, showTime: showTime, format: this.format, value: endTime ? moment(endTime) : undefined, placeholder: 'End', open: endOpen, onChange: this.handleTimeChange.bind(this, 'endTime'), onOpenChange: this.handleEndOpenChange })))));
