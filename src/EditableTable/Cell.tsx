@@ -12,14 +12,17 @@ class EditCell extends PureComponent<IColProps> {
     Object.assign(FILELDS, props.components);
   }
   renderField = (ops: any) => {
-    const { type = 'input', dataIndex, rowIndex, ...props } = ops;
+    const { type = 'input', dataIndex, rowIndex, onChange, ...props } = ops;
     type fieldType = keyof typeof FILELDS;
     const resType: fieldType = type;
     return FILELDS[resType]({
       name: dataIndex,
       ['data-row-index']: rowIndex,
       onBlur: () => { this.save(dataIndex, rowIndex); },
-      onChange: (e: any) => { this.change(e.target ? e.target.value : e, dataIndex, rowIndex); },
+      onChange: (e: any) => {
+        this.change(e.target ? e.target.value : e, dataIndex, rowIndex);
+        onChange && onChange();
+      },
       ...props });
   }
   change = (value: any, dataIndex: string, rowIndex: number) => {

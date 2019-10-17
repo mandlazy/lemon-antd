@@ -9,13 +9,16 @@ class EditCell extends PureComponent {
         this.form = undefined;
         this.firstRending = true;
         this.renderField = (ops) => {
-            const { type = 'input', dataIndex, rowIndex, ...props } = ops;
+            const { type = 'input', dataIndex, rowIndex, onChange, ...props } = ops;
             const resType = type;
             return FILELDS[resType]({
                 name: dataIndex,
                 ['data-row-index']: rowIndex,
                 onBlur: () => { this.save(dataIndex, rowIndex); },
-                onChange: (e) => { this.change(e.target ? e.target.value : e, dataIndex, rowIndex); },
+                onChange: (e) => {
+                    this.change(e.target ? e.target.value : e, dataIndex, rowIndex);
+                    onChange && onChange();
+                },
                 ...props
             });
         };
