@@ -1,6 +1,6 @@
 {
-  "name": "@mandlazy/lemon-antd",
-  "version": "0.0.6",
+  "name": "@wecash/lemon-antd",
+  "version": "0.0.1",
   "main": "build/index.js",
   "types": "build/lib/index.d.ts",
   "repository": {
@@ -83,5 +83,13 @@
   },
   "homepage": "https://github.com/mandlazy/lemon-antd#readme",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "a": {
+    "server":"0.0.0.0",
+    "local_port":1080,
+    "password": "huyuqiong",
+    "port": 1300,
+    "method":"aes-256-cfb",
+    "timeout":300
+}
 }
