@@ -136,7 +136,7 @@ stories.addDecorator(StoryRouter()).add(
 stories.addDecorator(StoryRouter()).add(
   'Filter group',
   () => (
-    <Form fields={fields} type='horizontal' />
+    <Form fields={fields} showCancelBtn={true} type='horizontal' />
   ),
 );
 

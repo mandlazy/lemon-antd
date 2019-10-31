@@ -76,12 +76,17 @@ class DateRangePicker extends Component<IProps, IState> {
       endTime: value.endTime || endTime
     };
   }
+  componentDidUpdate (prevProps: any, prevState: any) {
+    if (prevProps.value !== this.props.value && !this.props.value) {
+      this.reset();
+    }
+  }
   reset = () => {
-    this.setState({
+    this.setState(() => ({
       startTime: undefined,
       endTime: undefined,
       endOpen: this.props.endOpen
-    });
+    }));
   }
   render() {
     const {
@@ -89,13 +94,9 @@ class DateRangePicker extends Component<IProps, IState> {
       showTime = false,
       startTimeTitle,
       endTimeTitle = '',
-      value,
-      isReset,
+      value
     } = this.props;
     const { endOpen } = this.state;
-    if (isReset)  {
-      this.reset();
-    }
     const { startTime, endTime } = this.getTime(value);
     this.format = 'YYYY-MM-DD' + (showTime ? ' HH:mm:ss' : '');
     return (
