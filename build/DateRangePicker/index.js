@@ -51,11 +51,11 @@ class DateRangePicker extends Component {
             };
         };
         this.reset = () => {
-            this.setState({
+            this.setState(() => ({
                 startTime: undefined,
                 endTime: undefined,
                 endOpen: this.props.endOpen
-            });
+            }));
         };
         this.state = {
             startTime: undefined,
@@ -63,12 +63,14 @@ class DateRangePicker extends Component {
             endOpen: props.endOpen
         };
     }
-    render() {
-        const { className = '', showTime = false, startTimeTitle, endTimeTitle = '', value, isReset, } = this.props;
-        const { endOpen } = this.state;
-        if (isReset) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.value !== this.props.value && !this.props.value) {
             this.reset();
         }
+    }
+    render() {
+        const { className = '', showTime = false, startTimeTitle, endTimeTitle = '', value } = this.props;
+        const { endOpen } = this.state;
         const { startTime, endTime } = this.getTime(value);
         this.format = 'YYYY-MM-DD' + (showTime ? ' HH:mm:ss' : '');
         return (React.createElement(Row, { gutter: 8, className: 'date-range ' + className },

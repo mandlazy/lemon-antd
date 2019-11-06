@@ -76,7 +76,7 @@ class DateRangePicker extends Component<IProps, IState> {
       endTime: value.endTime || endTime
     };
   }
-  componentDidUpdate (prevProps: any, prevState: any) {
+  componentDidUpdate(prevProps: any, prevState: any) {
     if (prevProps.value !== this.props.value && !this.props.value) {
       this.reset();
     }

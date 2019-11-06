@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-react-router';
-import { Button, Form, Icon, Input } from 'antd';
+import { Button, Icon, Input } from 'antd';
 import EditTable from './index';
+import Form from '../Form';
 const stories = storiesOf('EditTable', module);
 const required = { required: true, message: '必填' };
 
@@ -100,6 +101,7 @@ interface ICol {
   termDay?: string;
   checked?: boolean;
   disabled?: boolean;
+  useRules?: boolean;
 }
 
 const initialData: ICol = {
@@ -109,7 +111,8 @@ const initialData: ICol = {
   rightOperator: '',
   termDay: '',
   checked: false,
-  disabled: false
+  disabled: false,
+  useRules: false
 };
 function EditTableComp() {
   const [ data, setData ] = useState<ICol[]>([
@@ -119,10 +122,10 @@ function EditTableComp() {
       leftOperator: '232',
       rightOperator: '',
       termDay: '',
-      checked: false,
-      disabled: true
+      checked: false
     }
   ]);
+  const editable: any = React.createRef();
   const add = () => {
     setData([ ...data, initialData ]);
   };
@@ -148,12 +151,16 @@ function EditTableComp() {
   const save = () => {
     // tslint:disable-next-line
     console.log('save');
+    editable.current.forms.forEach((form: any) => {
+      form.validateFields();
+    });
   };
   return (
-    <Form>
+    <Form onSubmit={save}>
       <Button onClick={add}>增加</Button>
       <Button onClick={save}>保存</Button>
       <EditTable
+        ref={editable}
         viewing={true}
         onError={onError}
         onInputChange={onInputChange}

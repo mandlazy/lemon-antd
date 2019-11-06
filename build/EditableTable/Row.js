@@ -1,10 +1,13 @@
 import EditableContext from './context';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Form } from 'antd';
-const EditableRow = (props) => {
-    const { form, ...otherProps } = props;
-    return (React.createElement(EditableContext.Provider, { value: { form } },
-        React.createElement("tr", Object.assign({}, otherProps))));
-};
+class EditableRow extends PureComponent {
+    render() {
+        const { form, addForm, ...otherProps } = this.props;
+        addForm(form);
+        return (React.createElement(EditableContext.Provider, { value: { form } },
+            React.createElement("tr", Object.assign({}, otherProps))));
+    }
+}
 export default Form.create()(EditableRow);
 //# sourceMappingURL=Row.js.map

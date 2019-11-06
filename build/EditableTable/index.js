@@ -9,6 +9,7 @@ class EditableTable extends PureComponent {
         this._data = [];
         this._allData = [];
         this._errors = [];
+        this.forms = [];
         this.handleErrors = (rowIndex, errors, hasError) => {
             if (hasError) {
                 this._errors[rowIndex] = errors;
@@ -45,15 +46,19 @@ class EditableTable extends PureComponent {
                 onInputChange(this._allData);
             }
         };
+        this.addForm = (form) => {
+            this.forms.push(form);
+        };
     }
     render() {
         const { data = [], columns, components, className = '', fixedWidth } = this.props;
         this._data = data.concat();
         this._allData = data.concat();
         let { viewing } = this.props;
+        this.forms = [];
         const _components = {
             body: {
-                row: EditRow,
+                row: (props) => React.createElement(EditRow, Object.assign({ addForm: this.addForm }, props)),
                 cell: EditCell
             }
         };
@@ -66,7 +71,7 @@ class EditableTable extends PureComponent {
                 ...otherCols,
                 ...colsOps,
                 onCell: (record, rowIndex) => {
-                    const { disabled, ...otherRecord } = record;
+                    const { disabled, useDefaultRules, customizeRules, ...otherRecord } = record;
                     if (record.disabled !== undefined) {
                         viewing = record.disabled;
                     }
@@ -81,7 +86,7 @@ class EditableTable extends PureComponent {
                         type: col.type,
                         rules: col.rules,
                         render: col.render,
-                        fieldops: { viewing, ...otherCols }
+                        fieldops: { viewing, useDefaultRules, customizeRules, ...otherCols }
                     };
                 }
             };

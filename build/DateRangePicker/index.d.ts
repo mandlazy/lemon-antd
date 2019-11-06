@@ -34,6 +34,7 @@ declare class DateRangePicker extends Component<IProps, IState> {
         startTime: any;
         endTime: any;
     };
+    componentDidUpdate(prevProps: any, prevState: any): void;
     reset: () => void;
     render(): JSX.Element;
 }

@@ -222,14 +222,14 @@ class DForm extends PureComponent<IFormProps & FormComponentProps> {
     }
   }
   renderForm = (props: any) => {
-    const { title, fields, className = '' } = props;
+    const { title, fields, fieldsComponent, className = '' } = props;
     const { titleDividerLine = false, footerDividerLine = false, } = this.props;
     return (
       <div className={ 'form-wrapper ' + className } key={title}>
         { title && <h3 className='form-title'>{title}</h3> }
         { titleDividerLine && <Divider className='form-divier' /> }
         <div className='form-fields-wrapper'>
-          { this.renderFields(fields) }
+          { fields ? this.renderFields(fields) : fieldsComponent }
         </div>
         { footerDividerLine && <Divider /> }
       </div>

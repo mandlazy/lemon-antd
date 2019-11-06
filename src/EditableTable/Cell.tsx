@@ -98,6 +98,8 @@ class EditCell extends PureComponent<IColProps> {
       useDefinedViewingComponent,
       viewingValueRender,
       viewing,
+      useDefaultRules = true,
+      customizeRules = {},
       ...otherFieldOps } = fieldops;
     const value = record[dataIndex];
     return render ? render(record, rowIndex) : (
@@ -109,7 +111,7 @@ class EditCell extends PureComponent<IColProps> {
         value}) :
        <Form.Item style={{ margin: 0 }}>
         {form.getFieldDecorator(dataIndex, {
-          rules,
+          rules: useDefaultRules ? rules : customizeRules[dataIndex],
           initialValue: value,
           ...validateOps
         })(this.renderField({ type, ...otherFieldOps, record, rowIndex, form}))}

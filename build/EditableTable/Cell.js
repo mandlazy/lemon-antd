@@ -77,7 +77,7 @@ class EditCell extends PureComponent {
             const { form } = values;
             this.form = form;
             const { dataIndex, record = {}, type, rules, fieldops, render, rowIndex, } = this.props;
-            const { validateOps, useDefinedViewingComponent, viewingValueRender, viewing, ...otherFieldOps } = fieldops;
+            const { validateOps, useDefinedViewingComponent, viewingValueRender, viewing, useDefaultRules = true, customizeRules = {}, ...otherFieldOps } = fieldops;
             const value = record[dataIndex];
             return render ? render(record, rowIndex) : (viewing ?
                 this._renderFieldViewing({
@@ -87,7 +87,7 @@ class EditCell extends PureComponent {
                     value
                 }) :
                 React.createElement(Form.Item, { style: { margin: 0 } }, form.getFieldDecorator(dataIndex, {
-                    rules,
+                    rules: useDefaultRules ? rules : customizeRules[dataIndex],
                     initialValue: value,
                     ...validateOps
                 })(this.renderField({ type, ...otherFieldOps, record, rowIndex, form }))));
