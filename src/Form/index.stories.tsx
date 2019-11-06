@@ -151,7 +151,7 @@ stories.addDecorator(StoryRouter()).add(
         text: '登录'
       }]}
       multiple={true}
-      fields={[ { title: '测试一', fields}, { title: '测试二', fields} ]}  />
+      fields={[ { title: '测试一', fields}, { title: '测试二', fieldsComponent: <Input/>} ]}  />
   ),
 );
 
