@@ -15,7 +15,7 @@ class EditableTable extends PureComponent <IEditTableProps> {
   _data: any = [];
   _allData: any = [];
   _errors: any = [];
-  forms: any = [];
+  forms: any = {};
   handleErrors = (rowIndex: number, errors: any, hasError: boolean) => {
     if (hasError) {
       this._errors[rowIndex] = errors;
@@ -50,15 +50,15 @@ class EditableTable extends PureComponent <IEditTableProps> {
        onInputChange(this._allData);
      }
   }
-  addForm = (form: any) => {
-    this.forms.push(form);
+  addForm = (form: any, index: any) => {
+    this.forms[index] = form;
   }
   render() {
     const { data = [], columns, components, className = '' , fixedWidth} = this.props;
     this._data = data.concat();
     this._allData = data.concat();
     let { viewing } = this.props;
-    this.forms = [];
+    this.forms = {};
     const _components = {
       body: {
         row: (props: any) => <EditRow addForm={this.addForm}  {...props}/>,

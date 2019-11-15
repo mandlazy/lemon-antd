@@ -4,7 +4,7 @@ import { Form } from 'antd';
 class EditableRow extends PureComponent {
     render() {
         const { form, addForm, ...otherProps } = this.props;
-        addForm(form);
+        addForm(form, otherProps['data-row-key']);
         return (React.createElement(EditableContext.Provider, { value: { form } },
             React.createElement("tr", Object.assign({}, otherProps))));
     }

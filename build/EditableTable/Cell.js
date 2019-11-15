@@ -76,9 +76,20 @@ class EditCell extends PureComponent {
         this.renderCell = (values) => {
             const { form } = values;
             this.form = form;
-            const { dataIndex, record = {}, type, rules, fieldops, render, rowIndex, } = this.props;
-            const { validateOps, useDefinedViewingComponent, viewingValueRender, viewing, useDefaultRules = true, customizeRules = {}, ...otherFieldOps } = fieldops;
+            const { dataIndex, record = {}, type, fieldops, render, rowIndex, } = this.props;
+            let { rules } = this.props;
+            const { validateOps, validateWithRecord = false, useDefinedViewingComponent, viewingValueRender, viewing, useDefaultRules = true, customizeRules = {}, ...otherFieldOps } = fieldops;
             const value = record[dataIndex];
+            if (validateWithRecord && rules) {
+                rules = rules.slice(0);
+                const validatorRuleIndex = rules.findIndex((rule) => rule.validator !== undefined);
+                const validatorFn = rules[validatorRuleIndex].validator;
+                rules[validatorRuleIndex] = {
+                    validator: (rule, curValue, cb, source, ops) => {
+                        validatorFn(rule, curValue, cb, source, ops, record);
+                    }
+                };
+            }
             return render ? render(record, rowIndex) : (viewing ?
                 this._renderFieldViewing({
                     dataIndex,

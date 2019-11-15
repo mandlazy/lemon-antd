@@ -88,13 +88,14 @@ class EditCell extends PureComponent<IColProps> {
       dataIndex,
       record = {},
       type,
-      rules,
       fieldops,
       render,
       rowIndex,
     } = this.props;
+    let { rules } = this.props;
     const {
       validateOps,
+      validateWithRecord = false,
       useDefinedViewingComponent,
       viewingValueRender,
       viewing,
@@ -102,6 +103,16 @@ class EditCell extends PureComponent<IColProps> {
       customizeRules = {},
       ...otherFieldOps } = fieldops;
     const value = record[dataIndex];
+    if (validateWithRecord && rules) {
+      rules = rules.slice(0);
+      const validatorRuleIndex = rules.findIndex((rule: any) => rule.validator !== undefined);
+      const validatorFn = rules[validatorRuleIndex].validator;
+      rules[validatorRuleIndex] = {
+        validator: (rule: any, curValue: any, cb: any, source: any, ops: any) => {
+          validatorFn(rule, curValue, cb, source, ops, record);
+        }
+      };
+    }
     return render ? render(record, rowIndex) : (
       viewing ?
       this._renderFieldViewing({

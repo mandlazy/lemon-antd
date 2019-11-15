@@ -11,7 +11,7 @@ export interface IRowProps {
 class EditableRow extends PureComponent<IRowProps> {
   render() {
     const { form, addForm, ...otherProps } = this.props;
-    addForm(form);
+    addForm(form, otherProps['data-row-key']);
     return (
       <EditableContext.Provider value={{ form }}>
         <tr {...otherProps} />
